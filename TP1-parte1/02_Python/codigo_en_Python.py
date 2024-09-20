@@ -24,7 +24,7 @@ def main():
 
         pid_B = os.fork()
         if pid_B == PROCESO_HIJO:
-            # Proceso B
+            
             print_process(PROCESS_B)
 
             pid_C = os.fork()
