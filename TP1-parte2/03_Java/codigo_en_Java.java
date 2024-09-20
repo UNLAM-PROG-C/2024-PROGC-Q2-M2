@@ -37,72 +37,90 @@ public class CountCharacters
       }
 
       @Override
-public void run() {
+public void run() 
+{
             countCharactersInRange(ini, stop, partialResultPos);
         }
     }
 
-    private static void countCharactersInRange(int ini, int stop, int partialResultPos) {
+    private static void countCharactersInRange(int ini, int stop, int partialResultPos) 
+    {
         int count = INITIAL_COUNT_VALUE;
-        for (int i = ini; i < stop; ++i) {
+        for (int i = ini; i < stop; ++i) 
+        {
             count += lines.get(i).length();
         }
 
         mutex.lock();
-        try {
+        try 
+        {
             partialResults[partialResultPos] = count;
-        } finally {
+        } 
+        finally 
+        {
             mutex.unlock();
         }
     }
 
-    private static List<String> readLinesFromFile(String filename) {
+    private static List<String> readLinesFromFile(String filename) 
+    {
         List<String> lines = new ArrayList<>();
-        try (BufferedReader fileReader = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(filename))) 
+        {
             String line;
-            while ((line = fileReader.readLine()) != null) {
+            while ((line = fileReader.readLine()) != null) 
+            {
                 if (!line.trim().isEmpty()) {
                     lines.add(line);
                 }
             }
-        } catch (IOException e) {
+        } 
+        catch (IOException e) 
+        {
             System.out.println("No se pudo abrir el archivo.");
             System.exit(ERROR);
         }
         return lines;
     }
 
-    private static int calculateTotalResult(int numThreads) {
+    private static int calculateTotalResult(int numThreads) 
+    {
         int totalResult = INITIAL_COUNT_VALUE;
-        for (int i = INITIAL_THREAD_COUNT; i < numThreads; i++) {
+        for (int i = INITIAL_THREAD_COUNT; i < numThreads; i++) 
+        {
             totalResult += partialResults[i];
         }
         return totalResult;
     }
 
-    private static void startThreads(int numThreads, int numLines) throws InterruptedException {
+    private static void startThreads(int numThreads, int numLines) throws InterruptedException 
+    {
         CharacterCounterThread[] threads = new CharacterCounterThread[numThreads];
         int linesPerThread = numLines / numThreads;
         int initialPosition = INITIAL_POSITION;
 
-        for (int threadCount = INITIAL_THREAD_COUNT; threadCount < numThreads; threadCount++) {
+        for (int threadCount = INITIAL_THREAD_COUNT; threadCount < numThreads; threadCount++) 
+        {
             int lastPosition = (threadCount == numThreads - 1) ? numLines : initialPosition + linesPerThread;
             threads[threadCount] = new CharacterCounterThread(initialPosition, lastPosition, threadCount);
             threads[threadCount].start();
             initialPosition = lastPosition;
         }
 
-        for (CharacterCounterThread thread : threads) {
+        for (CharacterCounterThread thread : threads) 
+        {
             thread.join();
         }
     }
 
-    private static void printResults(int totalResult, double processingTime) {
+    private static void printResults(int totalResult, double processingTime)
+     {
         System.out.println("Cantidad de caracteres del archivo: " + totalResult);
         System.out.println("Tiempo de procesamiento: " + processingTime + " ms");
     }
 
-public static void main(String[] args) throws InterruptedException {
+public static void main(String[] args) throws InterruptedException 
+{
         String filename = args[FILENAME_INDEX];
         int numThreads = Integer.parseInt(args[NUM_THREADS_INDEX]);
         lines = readLinesFromFile(filename);
