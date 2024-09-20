@@ -70,7 +70,8 @@ public void run()
             String line;
             while ((line = fileReader.readLine()) != null) 
             {
-                if (!line.trim().isEmpty()) {
+                if (!line.trim().isEmpty()) 
+                {
                     lines.add(line);
                 }
             }
