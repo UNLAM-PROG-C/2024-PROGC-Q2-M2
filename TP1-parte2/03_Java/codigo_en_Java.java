@@ -107,7 +107,8 @@ public static void main(String[] args) throws InterruptedException {
         int numThreads = Integer.parseInt(args[NUM_THREADS_INDEX]);
         lines = readLinesFromFile(filename);
         int numLines = lines.size();
-        if (numLines == EMPTY_FILE) {
+        if (numLines == EMPTY_FILE) 
+        {
             System.out.println("El archivo está vacío o no contiene líneas válidas.");
             System.exit(OK);
         }
