@@ -3,7 +3,6 @@
 #include <string>
 #include <thread>
 #include <vector>
-#include <mutex>
 #include <chrono>
 
 #define INITIAL_COUNT_VALUE 0
@@ -16,121 +15,111 @@
 #define ERROR 1
 #define ERROR_ARCHIVO 1
 
-std::mutex mutex;
 std::vector<int> partial_results;
-
 
 void count_characters(const std::vector<std::string> &lines, int ini, int stop, int partial_result_pos)
 {
-    int count = INITIAL_COUNT_VALUE;
-    for (int i = ini; i < stop; ++i)
-    {
-        count += lines[i].length();
-    }
+  int count = INITIAL_COUNT_VALUE;
+  for (int i = ini; i < stop; ++i)
+  {
+    count += lines[i].length();
+  }
 
-    
-    std::lock_guard<std::mutex> guard(mutex);
-    partial_results[partial_result_pos] = count;
+  partial_results[partial_result_pos] = count;
 }
-
 
 std::ifstream open_file(const std::string &filename)
 {
-    std::ifstream text_file(filename);
-    if (!text_file.is_open())
-    {
-        std::cout << "No se pudo abrir el archivo.\n";
-        throw std::runtime_error("Archivo no encontrado");
-    }
-    return text_file;
+  std::ifstream text_file(filename);
+  if (!text_file.is_open())
+  {
+    std::cout << "No se pudo abrir el archivo.\n";
+    throw std::runtime_error("Archivo no encontrado");
+  }
+  return text_file;
 }
-
 
 std::vector<std::string> read_lines(std::ifstream &text_file)
 {
-    std::vector<std::string> lines;
-    std::string line;
-    while (std::getline(text_file, line))
+  std::vector<std::string> lines;
+  std::string line;
+  while (std::getline(text_file, line))
+  {
+    if (!line.empty())
     {
-        if (!line.empty())
-        {
-            lines.push_back(line);
-        }
+      lines.push_back(line);
     }
-    return lines;
+  }
+  return lines;
 }
-
 
 void create_threads(int num_threads, const std::vector<std::string> &lines, int num_lines)
 {
-    std::vector<std::thread> threads;
-    int lines_per_thread = num_lines / num_threads;
-    int initial_position = INITIAL_POSITION;
+  std::vector<std::thread> threads;
+  int lines_per_thread = num_lines / num_threads;
+  int initial_position = INITIAL_POSITION;
 
-    for (int thread_count = INITIAL_THREAD_COUNT; thread_count < num_threads; ++thread_count)
-    {
-        int last_position = (thread_count == num_threads - 1) ? num_lines : initial_position + lines_per_thread;
-        threads.push_back(std::thread(count_characters, std::ref(lines), initial_position, last_position, thread_count));
-        initial_position = last_position;
-    }
+  for (int thread_count = INITIAL_THREAD_COUNT; thread_count < num_threads; ++thread_count)
+  {
+    int last_position = (thread_count == num_threads - 1) ? num_lines : initial_position + lines_per_thread;
+    threads.push_back(std::thread(count_characters, std::ref(lines), initial_position, last_position, thread_count));
+    initial_position = last_position;
+  }
 
-    
-    for (auto &t : threads)
-    {
-        t.join();
-    }
+  for (auto &t : threads)
+  {
+    t.join();
+  }
 }
-
 
 int sum_partial_results(int num_threads)
 {
-    int total_result = INITIAL_COUNT_VALUE;
-    for (int i = INITIAL_THREAD_COUNT; i < num_threads; ++i)
-    {
-        total_result += partial_results[i];
-    }
-    return total_result;
+  int total_result = INITIAL_COUNT_VALUE;
+  for (int i = INITIAL_THREAD_COUNT; i < num_threads; ++i)
+  {
+    total_result += partial_results[i];
+  }
+  return total_result;
 }
-
 
 void process_and_show_results(int total_result, std::chrono::high_resolution_clock::time_point start_time)
 {
-    auto finish_time = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> processing_time = finish_time - start_time;
+  auto finish_time = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double, std::milli> processing_time = finish_time - start_time;
 
-    std::cout << "Cantidad de caracteres del archivo: " << total_result << std::endl;
-    std::cout << "Tiempo de procesamiento: " << processing_time.count() << " ms" << std::endl;
+  std::cout << "Cantidad de caracteres del archivo: " << total_result << std::endl;
+  std::cout << "Tiempo de procesamiento: " << processing_time.count() << " ms" << std::endl;
 }
 
 int main(int argc, char *argv[])
 {
-    std::string filename = argv[FILENAME_INDEX];
-    int num_threads = std::stoi(argv[NUM_THREADS_INDEX]);
+  std::string filename = argv[FILENAME_INDEX];
+  int num_threads = std::stoi(argv[NUM_THREADS_INDEX]);
 
-    std::ifstream text_file;
-    try
-    {
-        text_file = open_file(filename);
-    }
-    catch (const std::exception &e)
-    {
-        return ERROR_ARCHIVO;               
-        }
+  std::ifstream text_file;
+  try
+  {
+    text_file = open_file(filename);
+  }
+  catch (const std::exception &e)
+  {
+    return ERROR_ARCHIVO;
+  }
 
-    std::vector<std::string> lines = read_lines(text_file);
-    text_file.close();
+  std::vector<std::string> lines = read_lines(text_file);
+  text_file.close();
 
-    int num_lines = lines.size();
-    if (num_lines == EMPTY_FILE)
-    {
-        std::cout << "El archivo está vacío o no contiene líneas válidas.\n";
-        return OK;
-    }
-    partial_results.resize(num_threads, INITIAL_COUNT_VALUE);
-    auto start_time = std::chrono::high_resolution_clock::now();
-    create_threads(num_threads, lines, num_lines);
-    int total_result = sum_partial_results(num_threads);
-    process_and_show_results(total_result, start_time);
-
+  int num_lines = lines.size();
+  if (num_lines == EMPTY_FILE)
+  {
+    std::cout << "El archivo está vacío o no contiene líneas válidas.\n";
     return OK;
+  }
+  partial_results.resize(num_threads, INITIAL_COUNT_VALUE);
+  auto start_time = std::chrono::high_resolution_clock::now();
+  create_threads(num_threads, lines, num_lines);
+  int total_result = sum_partial_results(num_threads);
+  process_and_show_results(total_result, start_time);
+
+  return OK;
 }

@@ -11,14 +11,9 @@ INITIAL_THREAD_COUNT = 0
 OK = 0
 ERROR = 1
 
-
 lines = []
 
-
 partial_results = []
-
-
-mutex = threading.Lock()
 
 def open_file(filename):
     try:
@@ -45,9 +40,7 @@ def count_characters(ini, stop, partial_result_pos):
     for i in range(ini, stop):
         count += len(lines[i])
 
-    
-    with mutex:
-        partial_results[partial_result_pos] = count
+    partial_results[partial_result_pos] = count
 
 def create_threads(num_threads, num_lines):
     threads = []
@@ -61,7 +54,6 @@ def create_threads(num_threads, num_lines):
         thread.start()
         initial_position = last_position
 
-    
     for thread in threads:
         thread.join()
 def sum_partial_results(num_threads):
