@@ -19,7 +19,10 @@ const int OK = 0;
 class Semaphore
 {
   public:
-    Semaphore(int count = NO_CROSSING_BABOONS) : count_(count) {}
+    Semaphore(int count = NO_CROSSING_BABOONS) : count_(count) 
+    {
+      
+    }
 
     void acquire()
     {
