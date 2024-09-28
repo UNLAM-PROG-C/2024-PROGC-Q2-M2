@@ -3,6 +3,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <chrono>
+#include <sstream>
 
 const int MAX_BABOONS = 5;
 const int TOTAL_BABOONS = 10;
@@ -21,7 +22,6 @@ class Semaphore
   public:
     Semaphore(int count = NO_CROSSING_BABOONS) : count_(count) 
     {
-      
     }
 
     void acquire()
@@ -50,8 +50,6 @@ std::condition_variable cv;
 Semaphore sem(MAX_BABOONS);
 int crossing_baboons = 0;
 int direction = 0;
-
-std::mutex print_mtx;
 
 void acquire_rope(int dir)
 {
@@ -83,13 +81,15 @@ void release_rope()
 
 void simulate_crossing(int id, int dir)
 {
-
-  std::lock_guard<std::mutex> lock(print_mtx);
-  std::cout << "Babuino " << id << " está cruzando en dirección " << (dir == LEFT_TO_RIGHT ? "izquierda a derecha" : "derecha a izquierda") << std::endl;
+  std::stringstream msg_crossing;
+  msg_crossing << "Babuino " << id << " esta cruzando en direccion " << (dir == LEFT_TO_RIGHT ? "izquierda a derecha" : "derecha a izquierda") << std::endl;
+  std::cout << msg_crossing.str();
 
   std::this_thread::sleep_for(std::chrono::seconds(MIN_CROSSING_TIME + rand() % MAX_CROSSING_TIME));
 
-  std::cout << "Babuino " << id << " terminó de cruzar." << std::endl;
+  std::stringstream msg_finish;
+  msg_finish << "Babuino " << id << " termino de cruzar." << std::endl;
+  std::cout << msg_finish.str();
 }
 
 void baboon_cross(int id, int dir)
