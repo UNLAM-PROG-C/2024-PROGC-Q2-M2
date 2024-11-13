@@ -1,11 +1,11 @@
 from tkinter import font
 import pygame
 import time 
-from utils import filtro_blanco_negro, imagenes_personajes, imagen_portada, imagen_selecciones, imagenes_formas_buenas
+from utils import draw_text, filtro_blanco_negro, imagenes_personajes, imagen_portada, imagen_selecciones, imagenes_formas_buenas
 from globals import ALTO, ANCHO, DIR_PERSONAJE_DERECHA, FOTOGRAMAS_MENU, SALIR_JUEGO, pantalla, reloj, BLANCO, NEGRO, GRIS, VERDE, CELESTE, font_path
 
 
-def mostrarTop5():      
+def mostrar_top_5():      
     registros = []
     with open('historial_record.txt', 'r') as archivo:
         lineas = archivo.readlines()[2:] 
@@ -91,8 +91,7 @@ def mostrar_portada():
 
     while portada_activa:
         pantalla.blit(imagen_portada, (0, 0))  # Dibujamos la imagen de fondo
-        texto_titulo = fuente_titulo.render("Tengo Hambre", True, BLANCO)
-        pantalla.blit(texto_titulo, (ANCHO // 2 - texto_titulo.get_width() // 2, 100))
+        draw_text("TENGO HAMBRE", fuente_titulo, GRIS, pantalla, ANCHO // 2, ALTO // 3)
 
         # Dibujar botones y textos
         pygame.draw.rect(pantalla, GRIS, boton_jugar)
@@ -128,7 +127,7 @@ def mostrar_portada():
                         pygame.mixer.music.stop()
                         musica_activa = True
                 elif boton_top5.collidepoint(evento.pos):
-                    mostrarTop5()
+                    mostrar_top_5()
                     pygame.quit()
                     exit()
                 elif boton_salir.collidepoint(evento.pos):

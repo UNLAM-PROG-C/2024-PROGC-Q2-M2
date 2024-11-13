@@ -28,7 +28,7 @@ def filtro_blanco_negro(imagen):
 
 def draw_text(text, font, color, surface, x, y):
     """Función para dibujar texto en la pantalla con borde más grueso.""" 
-    outline_color = CELESTE 
+    outline_color = CELESTE
     for dx in range(-thickness, thickness + 1): 
         for dy in range(-thickness, thickness + 1): 
             if dx != 0 or dy != 0:
