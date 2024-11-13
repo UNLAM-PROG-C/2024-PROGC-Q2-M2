@@ -9,7 +9,7 @@ def cargar_imagen(ruta, escala=None, tipo_forma=None):
     try:
         imagen = pygame.image.load(ruta).convert_alpha()
         if tipo_forma == 'mala':
-            imagen = convertir_blanco_negro(imagen)
+            filtro_blanco_negro(imagen)
         if escala:
             imagen = pygame.transform.scale(imagen, escala)
         return imagen
@@ -18,14 +18,13 @@ def cargar_imagen(ruta, escala=None, tipo_forma=None):
         pygame.quit()
         exit()
 
-def convertir_blanco_negro(imagen):
+def filtro_blanco_negro(imagen):
     ancho, alto = imagen.get_size()
     for x in range(ancho):
         for y in range(alto):
             color = imagen.get_at((x, y))
             gris = int(0.29 * color.r + 0.59 * color.g + 0.11 * color.b)
             imagen.set_at((x, y), (gris, gris, gris, color.a))  # Mantener la transparencia
-    return imagen
 
 # Cargar imágenes de las formas buenas y malas
 imagenes_formas_buenas = {
@@ -42,19 +41,19 @@ imagenes_formas_malas = {
 
 # Cargar imágenes de personajes disponibles
 imagenes_personajes = {
-    'Nena 1': {
+    'Katy Perry': {
         'derecha': cargar_imagen('img/nenita1_der.png', (100, 150)),
         'izquierda': cargar_imagen('img/nenita1_iz.png', (100, 150))
     },
-    'Nena 2': {
+    'Emi Mernes': {
         'derecha': cargar_imagen('img/aros-der.png', (100, 150)),
         'izquierda': cargar_imagen('img/aros-iz.png', (100, 150))
     },
-    'Nene 1': {
+    'Nene Malo': {
         'derecha': cargar_imagen('img/nene1-der.png', (100, 150)),
         'izquierda': cargar_imagen('img/nene1-iz.png', (100, 150))
     },
-    'Nene 2': {
+    'Bizza': {
         'derecha': cargar_imagen('img/will-der.png', (100, 150)),
         'izquierda': cargar_imagen('img/will-iz.png', (100, 150))
     },
