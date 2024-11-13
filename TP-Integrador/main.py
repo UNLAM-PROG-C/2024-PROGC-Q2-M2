@@ -27,7 +27,7 @@ def ejecutar_juego():
     stop_event = threading.Event()
 
     # Crear instancias de los generadores y movimiento
-    generador_formas = GeneradorFormas(cola_formas, lock_formas, tiempo_inicial, stop_event, formas_buenas_seleccionadas)
+    generador_formas = GeneradorFormas(cola_formas, lock_formas, tiempo_inicial, stop_event, formas_buenas_seleccionadas, formas_malas_seleccionadas)
     movimiento_formas = MovimientoFormas(cola_formas, lock_formas, jugador, reloj, tiempo_inicial, stop_event)
 
     # Iniciar los hilos para generar y mover las formas

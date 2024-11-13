@@ -5,9 +5,10 @@ from globals import pantalla, ANCHO
 
 # Clase que representa una forma que cae (puede ser buena o mala)
 class Forma:
-    def __init__(self, formas_buenas_seleccionadas):
+    def __init__(self, formas_buenas_seleccionadas, formas_malas_seleccionadas):
+        self.formas_seleccionadas = formas_buenas_seleccionadas + formas_malas_seleccionadas
         self.tamano = random.randint(40, 80)  # Tamaño aleatorio de la forma
-        self.nombre = random.choice(['Pizza', 'Pancho', 'Torta'])  # Nombre de la forma
+        self.nombre = random.choice(self.formas_seleccionadas)  # Nombre de la forma
         self.x = random.randint(0, ANCHO - self.tamano)  # Posición horizontal aleatoria
         self.y = -self.tamano  # Posición inicial (fuera de la pantalla, para caer desde arriba)
         self.velocidad = random.uniform(3, 7)  # Velocidad de caída

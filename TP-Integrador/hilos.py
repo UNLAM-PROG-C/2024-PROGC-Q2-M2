@@ -7,19 +7,20 @@ from forma import Forma
 from globals import ALTO
 
 class GeneradorFormas:
-    def __init__(self, cola, lock, tiempo_inicial, stop_event, formas_buenas_seleccionadas, frecuencia_base=1.0):
+    def __init__(self, cola, lock, tiempo_inicial, stop_event, formas_buenas_seleccionadas, formas_malas_seleccionadas, frecuencia_base=1.0):
         self.cola = cola
         self.lock = lock
         self.frecuencia_base = frecuencia_base
         self.tiempo_inicial = tiempo_inicial
         self.stop_event = stop_event
         self.formas_buenas_seleccionadas = formas_buenas_seleccionadas
+        self.formas_malas_seleccionadas = formas_malas_seleccionadas
 
     def generar_formas(self):
         while not self.stop_event.is_set():
             tiempo_juego = time.time() - self.tiempo_inicial
             frecuencia = max(0.2, self.frecuencia_base - tiempo_juego * 0.01)
-            nueva_forma = Forma(self.formas_buenas_seleccionadas)
+            nueva_forma = Forma(self.formas_buenas_seleccionadas, self.formas_malas_seleccionadas)
 
             with self.lock:
                 self.cola.put(nueva_forma)
