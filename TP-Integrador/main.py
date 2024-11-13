@@ -8,25 +8,12 @@ from hilos import GeneradorFormas, MovimientoFormas
 from forma import dibujar_forma
 from menu import mostrar_portada, mostrar_menu, mostrar_seleccion_personaje, mostrar_pantalla_fin
 from utils import  imagen_fondo
-from globals import reloj, pantalla, ANCHO, ALTO, velocidad_jugador, NEGRO
+from globals import ANCHO, ALTO, NEGRO, reloj, pantalla, velocidad_jugador, cola_formas, lock_formas
 
 pygame.init()
 
-# Variables del estado del juego
-ejecutando = True  # Controla si el juego sigue ejecutándose
-
-tiempo_inicial = time.time()  # Tiempo en el que inicia el juego
-
-# Cola y lock (bloqueo) para manejar la comunicación entre hilos
-cola_formas = Queue()           # Cola para las formas
-lock_formas = threading.Lock()  # Lock para evitar problemas de acceso concurrente a la cola
-
-# Listas para almacenar las selecciones de formas buenas y malas del jugador
-formas_buenas_seleccionadas = []
-formas_malas_seleccionadas = []
-
 def ejecutar_juego():
-    """Función principal para ejecutar el flujo del juego completo desde la portada hasta el final."""
+    """Función principal para ejecutar el flujo del juego."""
     global tiempo_inicial, ejecutando, stop_event, lock_formas, cola_formas, reloj
 
     # Reiniciar el estado del juego

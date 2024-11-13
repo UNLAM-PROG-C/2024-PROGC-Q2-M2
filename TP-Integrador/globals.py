@@ -1,4 +1,7 @@
 import pygame
+import time
+import threading
+from queue import Queue
 
 puntaje = 0        # Puntuación del jugador
 vidas = 3          # Número de vidas del jugador
@@ -15,3 +18,16 @@ NEGRO = (0, 0, 0)
 velocidad_jugador = 10
 
 reloj = pygame.time.Clock()  # Reloj para controlar los FPS del juego
+
+# Variables del estado del juego
+ejecutando = True  # Controla si el juego sigue ejecutándose
+
+tiempo_inicial = time.time()  # Tiempo en el que inicia el juego
+
+# Cola y lock (bloqueo) para manejar la comunicación entre hilos
+cola_formas = Queue()           # Cola para las formas
+lock_formas = threading.Lock()  # Lock para evitar problemas de acceso concurrente a la cola
+
+# Listas para almacenar las selecciones de formas buenas y malas del jugador
+formas_buenas_seleccionadas = []
+formas_malas_seleccionadas = []

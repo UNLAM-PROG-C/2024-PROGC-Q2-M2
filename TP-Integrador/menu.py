@@ -48,8 +48,8 @@ def mostrar_pantalla_fin():
     fin_activo = True
     fuente_titulo = pygame.font.SysFont(None, 72)
     fuente_boton = pygame.font.SysFont(None, 48)
-    ancho_boton = 200
-    alto_boton = 80
+    ancho_boton = 250
+    alto_boton = 100
 
     # Posiciones de los botones
     x_boton_volver = (ANCHO // 2) - (ancho_boton // 2)
