@@ -8,13 +8,13 @@ from jugador import Jugador
 from hilos import GeneradorFormas, MovimientoFormas
 from forma import dibujar_forma
 from menu import mostrar_portada, mostrar_menu, mostrar_seleccion_personaje, mostrar_pantalla_fin
-from utils import  imagen_fondo, filtro_blanco_negro
-from globals import ANCHO, ALTO, CANTIDAD_VIDAS, CANTIDAD_VIDAS_PERDER, DIR_PERSONAJE_DERECHA, DIR_PERSONAJE_IZQUIERDA, FOTOGRAMAS_JUEGO, NEGRO, PUNTAJE_INICIAL, SALIR_JUEGO, reloj, pantalla, velocidad_jugador, cola_formas, lock_formas
+from utils import  imagen_fondo
+from globals import ANCHO, ALTO, BLANCO, CANTIDAD_VIDAS, CANTIDAD_VIDAS_PERDER, DIR_PERSONAJE_DERECHA, DIR_PERSONAJE_IZQUIERDA, FOTOGRAMAS_JUEGO, NEGRO, PUNTAJE_INICIAL, SALIR_JUEGO, reloj, pantalla, velocidad_jugador, cola_formas, lock_formas
 
 pygame.init()
 
 pygame.mixer.init()
-pygame.mixer.music.load("Musica_de_fondo.mp3") 
+pygame.mixer.music.load("assets/Musica_de_fondo.mp3") 
 pygame.mixer.music.set_volume(0.03)
 
 def inicializar_juego():
@@ -83,8 +83,8 @@ def dibujar_formas_en_pantalla():
 def mostrar_hud():
     """Dibuja el puntaje y las vidas en la pantalla."""
     fuente = pygame.font.SysFont(None, 36)
-    texto_puntaje = fuente.render(f"Puntaje: {globals.puntaje}", True, NEGRO)
-    texto_vidas = fuente.render(f"Vidas: {globals.vidas}", True, NEGRO)
+    texto_puntaje = fuente.render(f"Puntaje: {globals.puntaje}", True, BLANCO)
+    texto_vidas = fuente.render(f"Vidas: {globals.vidas}", True, BLANCO)
     pantalla.blit(texto_puntaje, (10, 10))
     pantalla.blit(texto_vidas, (10, 50))
 
@@ -93,12 +93,6 @@ def verificar_fin_del_juego():
     """Verifica si el jugador ha perdido todas las vidas y muestra el mensaje final."""
     global ejecutando
     if globals.vidas <= CANTIDAD_VIDAS_PERDER:
-        filtro_blanco_negro(pantalla)
-        fuente_game_over = pygame.font.SysFont(None, 72)
-        texto_game_over = fuente_game_over.render("¡Juego Terminado!", True, NEGRO)
-        pantalla.blit(texto_game_over, (ANCHO // 2 - texto_game_over.get_width() // 2, ALTO // 2))
-        pygame.display.flip()
-        time.sleep(0.8)
         ejecutando = False
         stop_event.set()
 
@@ -109,7 +103,6 @@ def esperar_hilos(hilo_generador, hilo_movedor):
     hilo_movedor.join()
 
     save_score(nombre_jugador, globals.puntaje)
-    
 
 
 def ejecutar_juego(nombre_jugador):

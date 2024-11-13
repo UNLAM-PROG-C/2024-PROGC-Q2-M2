@@ -28,19 +28,6 @@ class Forma:
         # Redimensionamos la imagen al tamaño de la forma
         self.imagen = pygame.transform.scale(self.imagen, (self.tamano, self.tamano))
 
-    def mover(self, incremento_velocidad, alto_pantalla):
-        """Mueve la forma hacia abajo. Retorna True si sale de la pantalla."""
-        self.y += self.velocidad + incremento_velocidad
-        return self.y > alto_pantalla
-
-    def colisiona_con(self, jugador):
-        """Verifica si la forma colisiona con el jugador."""
-        return (
-            jugador.y < self.y + self.tamano and
-            jugador.x < self.x + self.tamano and
-            jugador.x + jugador.ancho_jugador > self.x
-        )
-
 # Función para dibujar una forma en la pantalla
 def dibujar_forma(forma):
     pantalla.blit(forma.imagen, (forma.x, forma.y))  # Dibujamos la imagen en la posición de la forma

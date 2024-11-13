@@ -2,7 +2,7 @@ import pygame
 import threading    
 import time
 from queue import Queue
-from globals import ALTO, ANCHO, CELESTE, TAM_PERSONAJE_LIMITE_INFERIOR, TAM_PERSONAJE_LIMITE_SUPERIOR, TIPO_FORMA_BUENA, TIPO_FORMA_MALA, thickness
+from globals import ALTO, ANCHO, CELESTE, COMPONENTE_AZUL_GRIS, COMPONENTE_ROJO_GRIS, COMPONENTE_VERDE_GRIS, TAM_PERSONAJE_LIMITE_INFERIOR, TAM_PERSONAJE_LIMITE_SUPERIOR, TIPO_FORMA_BUENA, TIPO_FORMA_MALA, thickness
 
 # Función para cargar imágenes con manejo de errores
 def cargar_imagen(ruta, escala=None, tipo_forma=None):
@@ -23,7 +23,7 @@ def filtro_blanco_negro(imagen):
     for x in range(ancho):
         for y in range(alto):
             color = imagen.get_at((x, y))
-            gris = int(0.29 * color.r + 0.59 * color.g + 0.11 * color.b)
+            gris = int(COMPONENTE_ROJO_GRIS * color.r + COMPONENTE_VERDE_GRIS * color.g + COMPONENTE_AZUL_GRIS * color.b)
             imagen.set_at((x, y), (gris, gris, gris, color.a))  # Mantener la transparencia
 
 def draw_text(text, font, color, surface, x, y):

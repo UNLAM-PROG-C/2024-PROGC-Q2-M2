@@ -21,13 +21,16 @@ FOTOGRAMAS_FORMAS = 50
 FOTOGRAMAS_JUEGO = 60
 DIR_PERSONAJE_DERECHA = "derecha"
 DIR_PERSONAJE_IZQUIERDA = "izquierda"
+COMPONENTE_ROJO_GRIS = 0.29
+COMPONENTE_VERDE_GRIS = 0.59
+COMPONENTE_AZUL_GRIS = 0.11
 
 puntaje = 0        # Puntuación del jugador
 vidas = 3          # Número de vidas del jugador
 # Definimos las dimensiones de la pantalla del juego
 ANCHO, ALTO = 800, 600  # Ajusta el tamaño de la pantalla
 pantalla = pygame.display.set_mode((ANCHO, ALTO))  # Creamos la pantalla del juego
-pygame.display.set_caption("Atrapa las Comidas")  # Título de la ventana
+pygame.display.set_caption("Tengo Hambre")  # Título de la ventana
 
 # Definimos colores usando formato RGB
 BLANCO = (255, 255, 255)
