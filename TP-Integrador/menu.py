@@ -1,8 +1,7 @@
 import pygame
 import time 
-from utils import imagenes_personajes
+from utils import imagenes_personajes, imagen_portada
 from globals import ALTO, ANCHO, pantalla, reloj, BLANCO, NEGRO
-
 
 #  Función para mostrar la pantalla de portada
 def mostrar_portada():
@@ -20,8 +19,9 @@ def mostrar_portada():
     boton_jugar = pygame.Rect(x_boton, y_boton, ancho_boton, alto_boton)
 
     while portada_activa:
-        pantalla.fill(BLANCO)  # Fondo blanco
-        texto_titulo = fuente_titulo.render("Atrapa las Comidas", True, NEGRO)
+       # pantalla.fill(BLANCO)  # Fondo blanco
+        pantalla.blit(imagen_portada, (0, 0))  # Dibujamos la imagen de fondo
+        texto_titulo = fuente_titulo.render("Tengo hambre", True, BLANCO)
         pantalla.blit(texto_titulo, (ANCHO // 2 - texto_titulo.get_width() // 2, 100))
 
         # Dibujar el botón "Jugar"
