@@ -3,20 +3,10 @@ import os
 from datetime import datetime
 import pygame
 import sys
+from globals import ANCHO, ALTO, GRIS, CELESTE, pantalla, thickness
+from utils import imagen_inicio
 
 pygame.init()
-
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Pantalla de Inicio")
-
-
-WHITE = (255, 255, 255)
-BLACK = (16, 0, 37)
-BLUE = (105, 34, 226) 
-GRIS = (46,46,66)
-CELESTE = (162, 255, 244)
 
 font_path = 'fonts/dogicapixelbold.ttf' 
 size = 25
@@ -27,20 +17,16 @@ small_font = pygame.font.Font(font_path, 20)
 input_active = False
 user_text = ""
 
-background_image = pygame.image.load("img/inicio.png")
-background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
-
 def draw_text(text, font, color, surface, x, y):
     """Función para dibujar texto en la pantalla con borde más grueso.""" 
     outline_color = CELESTE 
-    thickness = 2
     for dx in range(-thickness, thickness + 1): 
         for dy in range(-thickness, thickness + 1): 
             if dx != 0 or dy != 0:
                 text_obj = font.render(text, True, outline_color) 
                 text_rect = text_obj.get_rect(center=(x + dx, y + dy)) 
                 surface.blit(text_obj, text_rect)
-    # Dibujar el texto principal 
+    
     text_obj = font.render(text, True, color) 
     text_rect = text_obj.get_rect(center=(x, y)) 
     surface.blit(text_obj, text_rect)
@@ -55,16 +41,9 @@ def save_score(username, score):
         if not file_exists:
             file.write(f"{'Nombre de Usuario':<20} | {'Puntaje':<7} | {'Fecha':<19}\n")
             file.write("=" * 49 + "\n")
-        
-        # Obtener la fecha y hora actual
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        
-        # Escribir el puntaje con el formato deseado
         file.write(f"{username:<20} | {score:<7} | {current_time:<19}\n")
-
     print("Puntaje guardado con éxito.")
-
-
 
 def inicio():
     """Pantalla de inicio donde el usuario ingresa su nombre."""
@@ -73,14 +52,14 @@ def inicio():
     running = True
 
     while running:
-        screen.blit(background_image, (0, 0))
-        draw_text("Ingrese su nombre:", font, BLACK, screen, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50)
-        input_box = pygame.Rect(SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2, 200, 50)
-        pygame.draw.rect(screen, BLACK, input_box)
-        pygame.draw.rect(screen, CELESTE, input_box, 4)
+        pantalla.blit(imagen_inicio, (0, 0))
+        draw_text("Ingrese su nombre:", font, GRIS, pantalla, ANCHO // 2, ALTO // 2 - 50)
+        input_box = pygame.Rect(ANCHO // 2 - 100, ALTO // 2, 200, 50)
+        pygame.draw.rect(pantalla, GRIS, input_box)
+        pygame.draw.rect(pantalla, CELESTE, input_box, 4)
 
         text_surface = small_font.render(user_text, True, CELESTE)
-        screen.blit(text_surface, (input_box.x + 5, input_box.y + 10))
+        pantalla.blit(text_surface, (input_box.x + 5, input_box.y + 10))
         input_box.w = max(200, text_surface.get_width() + 10)
 
         for event in pygame.event.get():

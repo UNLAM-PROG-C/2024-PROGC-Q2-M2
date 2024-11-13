@@ -13,6 +13,9 @@ pygame.display.set_caption("Atrapa las Comidas")  # Título de la ventana
 # Definimos colores usando formato RGB
 BLANCO = (255, 255, 255)
 NEGRO = (0, 0, 0)
+GRIS = (16, 0, 37)
+CELESTE = (162, 255, 244)
+BLUE = (105, 34, 226) 
 
 # Velocidad de movimiento del jugador
 velocidad_jugador = 10
@@ -31,3 +34,5 @@ lock_formas = threading.Lock()  # Lock para evitar problemas de acceso concurren
 # Listas para almacenar las selecciones de formas buenas y malas del jugador
 formas_buenas_seleccionadas = []
 formas_malas_seleccionadas = []
+
+thickness = 2

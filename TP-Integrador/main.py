@@ -3,7 +3,7 @@ import pygame
 import threading
 import time 
 import globals
-from inicio import *
+from inicio import save_score, inicio
 from jugador import Jugador
 from hilos import GeneradorFormas, MovimientoFormas
 from forma import dibujar_forma
@@ -12,6 +12,9 @@ from utils import  imagen_fondo
 from globals import ANCHO, ALTO, NEGRO, reloj, pantalla, velocidad_jugador, cola_formas, lock_formas
 
 pygame.init()
+
+pygame.mixer.init()
+pygame.mixer.music.load("musica_fondo.mp3") 
 
 def inicializar_juego():
     """Función principal para ejecutar el flujo del juego."""
@@ -111,7 +114,7 @@ def ejecutar_juego(nombre_jugador):
     """Función principal para ejecutar el flujo del juego."""
     inicializar_juego()
     hilo_generador, hilo_movedor = iniciar_hilos()
-
+    pygame.mixer.music.play(-1) 
     while ejecutando:
         reloj.tick(60)  # Controlamos el juego a 60 FPS
         pantalla.blit(imagen_fondo, (0, 0))  # Dibujamos la imagen de fondo
@@ -133,7 +136,7 @@ def ejecutar_juego(nombre_jugador):
 
         # Actualizar la pantalla
         pygame.display.flip()
-
+    pygame.mixer.music.stop()
     esperar_hilos(hilo_generador, hilo_movedor)
     
     return mostrar_pantalla_fin()
