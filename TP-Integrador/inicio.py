@@ -1,3 +1,6 @@
+
+import os
+from datetime import datetime
 import pygame
 import sys
 
@@ -42,10 +45,26 @@ def draw_text(text, font, color, surface, x, y):
     text_rect = text_obj.get_rect(center=(x, y)) 
     surface.blit(text_obj, text_rect)
 
+
 def save_score(username, score):
     """Guarda el nombre de usuario y el puntaje en un archivo de texto."""
-    with open("historial_record.txt", "a") as file:
-        file.write(f"{username}: {score}\n")
+    filename = "historial_record.txt"
+    file_exists = os.path.isfile(filename)
+    
+    with open(filename, "a") as file:
+        if not file_exists:
+            file.write(f"{'Nombre de Usuario':<20} | {'Puntaje':<7} | {'Fecha':<19}\n")
+            file.write("=" * 49 + "\n")
+        
+        # Obtener la fecha y hora actual
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Escribir el puntaje con el formato deseado
+        file.write(f"{username:<20} | {score:<7} | {current_time:<19}\n")
+
+    print("Puntaje guardado con éxito.")
+
+
 
 def inicio():
     """Pantalla de inicio donde el usuario ingresa su nombre."""
@@ -77,7 +96,6 @@ def inicio():
                 if input_active:
                     if event.key == pygame.K_RETURN:
                         if user_text:
-                            save_score(user_text, 0) 
                             running = False
                     elif event.key == pygame.K_BACKSPACE:
                         user_text = user_text[:-1]
@@ -86,4 +104,4 @@ def inicio():
 
         pygame.display.flip()
         clock.tick(30)
-
+    return user_text

@@ -1,20 +1,3 @@
-brenda: 0
-brenda: 0
-brenda: 0
-brenda: 0
-brenda: 0
-brenda: 0
-brenda: 0
-brenda: 0
-brenda: 0
-brenda: 0
-brenda: 0
-brenda: 0
-brenda: 0
-brenda: 0
-BRENDA: 0
-brenda: 0
-brenda: 0
-brenda: 0
-brenda: 0
-bren: 0
+Nombre de Usuario    | Puntaje | Fecha              
+=================================================
+brnda                | 13      | 2024-11-13 00:24:53

@@ -3,7 +3,7 @@ import pygame
 import threading
 import time 
 import globals
-from inicio import inicio
+from inicio import *
 from jugador import Jugador
 from hilos import GeneradorFormas, MovimientoFormas
 from forma import dibujar_forma
@@ -13,7 +13,7 @@ from globals import ANCHO, ALTO, NEGRO, reloj, pantalla, velocidad_jugador, cola
 
 pygame.init()
 
-def ejecutar_juego():
+def ejecutar_juego(nombre_jugador):
     """Función principal para ejecutar el flujo del juego."""
     global tiempo_inicial, ejecutando, stop_event, lock_formas, cola_formas, reloj
 
@@ -94,6 +94,8 @@ def ejecutar_juego():
     hilo_generador.join()
     hilo_movedor.join()
 
+    save_score(nombre_jugador, globals.puntaje)
+    
     # Mostrar la pantalla de fin del juego y tomar la acción correspondiente
     accion = mostrar_pantalla_fin()
     return accion
@@ -101,7 +103,7 @@ def ejecutar_juego():
 
 # Inicia el flujo principal del juego
 if __name__ == "__main__":
-    inicio()
+    nombre_jugador = inicio()
     mostrar_portada()
     
     while True:
@@ -115,7 +117,7 @@ if __name__ == "__main__":
         formas_buenas_seleccionadas, formas_malas_seleccionadas = mostrar_menu()
 
         # Ejecutamos el juego y obtenemos la acción seleccionada al final
-        accion = ejecutar_juego()
+        accion = ejecutar_juego(nombre_jugador)
 
         # Verificamos la acción después de que termina el juego
         if accion == "salir":
