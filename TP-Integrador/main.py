@@ -9,7 +9,7 @@ from hilos import GeneradorFormas, MovimientoFormas
 from forma import dibujar_forma
 from menu import mostrar_portada, mostrar_menu, mostrar_seleccion_personaje, mostrar_pantalla_fin
 from utils import  imagen_fondo, filtro_blanco_negro
-from globals import ANCHO, ALTO, NEGRO, reloj, pantalla, velocidad_jugador, cola_formas, lock_formas
+from globals import ANCHO, ALTO, CANTIDAD_VIDAS, CANTIDAD_VIDAS_PERDER, DIR_PERSONAJE_DERECHA, DIR_PERSONAJE_IZQUIERDA, FOTOGRAMAS_JUEGO, NEGRO, PUNTAJE_INICIAL, SALIR_JUEGO, reloj, pantalla, velocidad_jugador, cola_formas, lock_formas
 
 pygame.init()
 
@@ -21,8 +21,8 @@ def inicializar_juego():
     global tiempo_inicial, ejecutando, stop_event, lock_formas, cola_formas, reloj
 
     # Reiniciar el estado del juego
-    globals.puntaje = 0
-    globals.vidas = 3
+    globals.puntaje = PUNTAJE_INICIAL
+    globals.vidas = CANTIDAD_VIDAS
     tiempo_inicial = time.time()
     ejecutando = True
     cola_formas = Queue()
@@ -48,7 +48,7 @@ def manejar_eventos():
         if evento.type == pygame.QUIT:
             ejecutando = False
             stop_event.set()
-            return "salir"
+            return SALIR_JUEGO
     return None
 
 
@@ -57,15 +57,15 @@ def manejar_movimiento_jugador():
     teclas = pygame.key.get_pressed()
     if teclas[pygame.K_LEFT] and jugador.x - velocidad_jugador >= 0:
         jugador.x -= velocidad_jugador
-        jugador.direccion_jugador = 'izquierda'
+        jugador.direccion_jugador = DIR_PERSONAJE_IZQUIERDA
     elif teclas[pygame.K_RIGHT] and jugador.x + velocidad_jugador <= ANCHO - jugador.ancho_jugador:
         jugador.x += velocidad_jugador
-        jugador.direccion_jugador = 'derecha'
+        jugador.direccion_jugador = DIR_PERSONAJE_DERECHA
 
 
 def dibujar_jugador():
     """Dibuja al jugador en pantalla según su dirección."""
-    if jugador.direccion_jugador == 'derecha':
+    if jugador.direccion_jugador == DIR_PERSONAJE_DERECHA:
         pantalla.blit(jugador.imagen_derecha, (jugador.x, jugador.y))
     else:
         pantalla.blit(jugador.imagen_izquierda, (jugador.x, jugador.y))
@@ -91,7 +91,7 @@ def mostrar_hud():
 def verificar_fin_del_juego():
     """Verifica si el jugador ha perdido todas las vidas y muestra el mensaje final."""
     global ejecutando
-    if globals.vidas <= 0:
+    if globals.vidas <= CANTIDAD_VIDAS_PERDER:
         filtro_blanco_negro(pantalla)
         fuente_game_over = pygame.font.SysFont(None, 72)
         texto_game_over = fuente_game_over.render("¡Juego Terminado!", True, NEGRO)
@@ -117,12 +117,12 @@ def ejecutar_juego(nombre_jugador):
     hilo_generador, hilo_movedor = iniciar_hilos()
     
     while ejecutando:
-        reloj.tick(60)  # Controlamos el juego a 60 FPS
+        reloj.tick(FOTOGRAMAS_JUEGO)  # Controlamos el juego a 60 FPS
         pantalla.blit(imagen_fondo, (0, 0))  # Dibujamos la imagen de fondo
 
         # Manejo de eventos y movimiento del jugador
         accion = manejar_eventos()
-        if accion == "salir":
+        if accion == SALIR_JUEGO:
             break
 
         manejar_movimiento_jugador()
@@ -161,7 +161,7 @@ if __name__ == "__main__":
         accion = ejecutar_juego(nombre_jugador)
 
         # Verificamos la acción después de que termina el juego
-        if accion == "salir":
+        if accion == SALIR_JUEGO:
             break  # Salimos del bucle principal y cerramos el juego
 
     pygame.quit()

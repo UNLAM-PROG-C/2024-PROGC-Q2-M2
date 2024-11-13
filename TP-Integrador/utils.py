@@ -2,13 +2,13 @@ import pygame
 import threading    
 import time
 from queue import Queue
-from globals import ALTO, ANCHO, CELESTE, thickness
+from globals import ALTO, ANCHO, CELESTE, TAM_PERSONAJE_LIMITE_INFERIOR, TAM_PERSONAJE_LIMITE_SUPERIOR, TIPO_FORMA_BUENA, TIPO_FORMA_MALA, thickness
 
 # Función para cargar imágenes con manejo de errores
 def cargar_imagen(ruta, escala=None, tipo_forma=None):
     try:
         imagen = pygame.image.load(ruta).convert_alpha()
-        if tipo_forma == 'mala':
+        if tipo_forma == TIPO_FORMA_MALA:
             filtro_blanco_negro(imagen)
         if escala:
             imagen = pygame.transform.scale(imagen, escala)
@@ -44,46 +44,46 @@ def draw_text(text, font, color, surface, x, y):
 
 # Cargar imágenes de las formas buenas y malas
 imagenes_formas_buenas = {
-    'Hamburguesa': cargar_imagen('img/comida_rapida_snacks/15_burger.png', tipo_forma='buena'),
-    'Papas Fritas': cargar_imagen('img/comida_rapida_snacks/44_frenchfries.png', tipo_forma='buena'),
-    'Pancho': cargar_imagen('img/comida_rapida_snacks/54_hotdog.png', tipo_forma='buena'),
-    'Nacho': cargar_imagen('img/comida_rapida_snacks/71_nacho.png', tipo_forma='buena'),
-    'Pizza': cargar_imagen('img/comida_rapida_snacks/81_pizza.png', tipo_forma='buena'),
-    'Pochoclos': cargar_imagen('img/comida_rapida_snacks/83_popcorn.png', tipo_forma='buena'),
-    'Sanguche': cargar_imagen('img/comida_rapida_snacks/92_sandwich.png', tipo_forma='buena'),
-    'Chocolate': cargar_imagen('img/dulces_postres/26_chocolate.png', tipo_forma='buena'),
-    'Torta': cargar_imagen('img/dulces_postres/30_chocolatecake.png', tipo_forma='buena')
+    'Hamburguesa': cargar_imagen('img/comida_rapida_snacks/15_burger.png', tipo_forma= TIPO_FORMA_BUENA),
+    'Papas Fritas': cargar_imagen('img/comida_rapida_snacks/44_frenchfries.png', tipo_forma= TIPO_FORMA_BUENA),
+    'Pancho': cargar_imagen('img/comida_rapida_snacks/54_hotdog.png', tipo_forma= TIPO_FORMA_BUENA),
+    'Nacho': cargar_imagen('img/comida_rapida_snacks/71_nacho.png', tipo_forma= TIPO_FORMA_BUENA),
+    'Pizza': cargar_imagen('img/comida_rapida_snacks/81_pizza.png', tipo_forma= TIPO_FORMA_BUENA),
+    'Pochoclos': cargar_imagen('img/comida_rapida_snacks/83_popcorn.png', tipo_forma= TIPO_FORMA_BUENA),
+    'Sanguche': cargar_imagen('img/comida_rapida_snacks/92_sandwich.png', tipo_forma= TIPO_FORMA_BUENA),
+    'Chocolate': cargar_imagen('img/dulces_postres/26_chocolate.png', tipo_forma= TIPO_FORMA_BUENA),
+    'Torta': cargar_imagen('img/dulces_postres/30_chocolatecake.png', tipo_forma= TIPO_FORMA_BUENA)
 }
 
 imagenes_formas_malas = {
-    'Hamburguesa': cargar_imagen('img/comida_rapida_snacks/15_burger.png', tipo_forma='mala'),
-    'Papas Fritas': cargar_imagen('img/comida_rapida_snacks/44_frenchfries.png', tipo_forma='mala'),
-    'Pancho': cargar_imagen('img/comida_rapida_snacks/54_hotdog.png', tipo_forma='mala'),
-    'Nacho': cargar_imagen('img/comida_rapida_snacks/71_nacho.png', tipo_forma='mala'),
-    'Pizza': cargar_imagen('img/comida_rapida_snacks/81_pizza.png', tipo_forma='mala'),
-    'Pochoclos': cargar_imagen('img/comida_rapida_snacks/83_popcorn.png', tipo_forma='mala'),
-    'Sanguche': cargar_imagen('img/comida_rapida_snacks/92_sandwich.png', tipo_forma='mala'),
-    'Chocolate': cargar_imagen('img/dulces_postres/26_chocolate.png', tipo_forma='mala'),
-    'Torta': cargar_imagen('img/dulces_postres/30_chocolatecake.png', tipo_forma='mala')
+    'Hamburguesa': cargar_imagen('img/comida_rapida_snacks/15_burger.png', tipo_forma= TIPO_FORMA_MALA),
+    'Papas Fritas': cargar_imagen('img/comida_rapida_snacks/44_frenchfries.png', tipo_forma= TIPO_FORMA_MALA),
+    'Pancho': cargar_imagen('img/comida_rapida_snacks/54_hotdog.png', tipo_forma= TIPO_FORMA_MALA),
+    'Nacho': cargar_imagen('img/comida_rapida_snacks/71_nacho.png', tipo_forma= TIPO_FORMA_MALA),
+    'Pizza': cargar_imagen('img/comida_rapida_snacks/81_pizza.png', tipo_forma= TIPO_FORMA_MALA),
+    'Pochoclos': cargar_imagen('img/comida_rapida_snacks/83_popcorn.png', tipo_forma=TIPO_FORMA_MALA),
+    'Sanguche': cargar_imagen('img/comida_rapida_snacks/92_sandwich.png', tipo_forma= TIPO_FORMA_MALA),
+    'Chocolate': cargar_imagen('img/dulces_postres/26_chocolate.png', tipo_forma=TIPO_FORMA_MALA),
+    'Torta': cargar_imagen('img/dulces_postres/30_chocolatecake.png', tipo_forma=TIPO_FORMA_MALA)
 }
 
 # Cargar imágenes de personajes disponibles
 imagenes_personajes = {
     'Katy Perry': {
-        'derecha': cargar_imagen('img/nenita1_der.png', (100, 150)),
-        'izquierda': cargar_imagen('img/nenita1_iz.png', (100, 150))
+        'derecha': cargar_imagen('img/nenita1_der.png', (TAM_PERSONAJE_LIMITE_INFERIOR, TAM_PERSONAJE_LIMITE_SUPERIOR)),
+        'izquierda': cargar_imagen('img/nenita1_iz.png', (TAM_PERSONAJE_LIMITE_INFERIOR, TAM_PERSONAJE_LIMITE_SUPERIOR))
     },
     'Emi Mernes': {
-        'derecha': cargar_imagen('img/aros-der.png', (100, 150)),
-        'izquierda': cargar_imagen('img/aros-iz.png', (100, 150))
+        'derecha': cargar_imagen('img/aros-der.png', (TAM_PERSONAJE_LIMITE_INFERIOR, TAM_PERSONAJE_LIMITE_SUPERIOR)),
+        'izquierda': cargar_imagen('img/aros-iz.png', (TAM_PERSONAJE_LIMITE_INFERIOR, TAM_PERSONAJE_LIMITE_SUPERIOR))
     },
     'Nene Malo': {
-        'derecha': cargar_imagen('img/nene1-der.png', (100, 150)),
-        'izquierda': cargar_imagen('img/nene1-iz.png', (100, 150))
+        'derecha': cargar_imagen('img/nene1-der.png', (TAM_PERSONAJE_LIMITE_INFERIOR, TAM_PERSONAJE_LIMITE_SUPERIOR)),
+        'izquierda': cargar_imagen('img/nene1-iz.png', (TAM_PERSONAJE_LIMITE_INFERIOR, TAM_PERSONAJE_LIMITE_SUPERIOR))
     },
     'Bizza': {
-        'derecha': cargar_imagen('img/will-der.png', (100, 150)),
-        'izquierda': cargar_imagen('img/will-iz.png', (100, 150))
+        'derecha': cargar_imagen('img/will-der.png', (TAM_PERSONAJE_LIMITE_INFERIOR, TAM_PERSONAJE_LIMITE_SUPERIOR)),
+        'izquierda': cargar_imagen('img/will-iz.png', (TAM_PERSONAJE_LIMITE_INFERIOR, TAM_PERSONAJE_LIMITE_SUPERIOR))
     },
 }
 

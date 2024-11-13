@@ -1,7 +1,8 @@
 import pygame
 import time 
 from utils import imagenes_personajes, imagen_portada, draw_text, imagenes_formas_buenas, imagenes_formas_malas
-from globals import ALTO, ANCHO, pantalla, reloj, BLANCO, NEGRO, GRIS, VERDE, CELESTE 
+from globals import ALTO, ANCHO, DIR_PERSONAJE_DERECHA, FOTOGRAMAS_MENU, SALIR_JUEGO, pantalla, reloj, BLANCO, NEGRO, GRIS, VERDE, CELESTE 
+
 
 def mostrarTop5():      
     registros = []
@@ -96,7 +97,7 @@ def mostrar_portada():
         pantalla.blit(texto_boton_top5, texto_boton_top5.get_rect(center=boton_top5.center))
         
         pygame.draw.rect(pantalla, GRIS, boton_salir)
-        texto_boton_salir = fuente_boton.render("Salir", True, CELESTE)
+        texto_boton_salir = fuente_boton.render(SALIR_JUEGO, True, CELESTE)
         texto_boton_salir_rect = texto_boton_salir.get_rect(center=boton_salir.center)
         pantalla.blit(texto_boton_salir, texto_boton_salir_rect)
 
@@ -124,7 +125,7 @@ def mostrar_portada():
                     exit()
 
         pygame.display.flip()
-        reloj.tick(30)
+        reloj.tick(FOTOGRAMAS_MENU)
 
 # Función para mostrar la pantalla de final del juego
 def mostrar_pantalla_fin():
@@ -158,7 +159,7 @@ def mostrar_pantalla_fin():
 
         # Dibujar el botón "Salir"
         pygame.draw.rect(pantalla, (150, 0, 0), boton_salir)
-        texto_boton_salir = fuente_boton.render("Salir", True, BLANCO)
+        texto_boton_salir = fuente_boton.render(SALIR_JUEGO, True, BLANCO)
         texto_boton_salir_rect = texto_boton_salir.get_rect(center=boton_salir.center)
         pantalla.blit(texto_boton_salir, texto_boton_salir_rect)
 
@@ -171,10 +172,10 @@ def mostrar_pantalla_fin():
                 if boton_volver.collidepoint(evento.pos):
                     return "volver"
                 elif boton_salir.collidepoint(evento.pos):
-                    return "salir"
+                    return SALIR_JUEGO
 
         pygame.display.flip()
-        reloj.tick(30)
+        reloj.tick(FOTOGRAMAS_MENU)
 
 
 # Función para mostrar el menú de selección
@@ -238,7 +239,7 @@ def mostrar_menu():
                 pantalla.blit(texto_instruccion, (ANCHO // 2 - texto_instruccion.get_width() // 2, 450 + idx * 30))
 
             pygame.display.flip()
-            reloj.tick(30)
+            reloj.tick(FOTOGRAMAS_MENU)
 
         # Validar que al menos haya una forma buena y una mala seleccionada
         if seleccionadas_buenas and seleccionadas_malas:
@@ -310,7 +311,7 @@ def mostrar_seleccion_personaje():
         # Dibujar los botones de personajes
         for boton, nombre_personaje in botones_personajes:
             pygame.draw.rect(pantalla, (200, 200, 200), boton)
-            imagen_personaje = imagenes_personajes[nombre_personaje]['derecha']
+            imagen_personaje = imagenes_personajes[nombre_personaje][DIR_PERSONAJE_DERECHA]
             pantalla.blit(imagen_personaje, (boton.x + (ancho_boton // 2) - imagen_personaje.get_width() // 2, boton.y + (alto_boton // 2) - imagen_personaje.get_height() // 2))
             texto_nombre = fuente_boton.render(nombre_personaje, True, NEGRO)
             pantalla.blit(texto_nombre, (boton.x + (ancho_boton // 2) - texto_nombre.get_width() // 2, boton.y + alto_boton))
@@ -328,6 +329,6 @@ def mostrar_seleccion_personaje():
                         seleccion_activa = False
 
         pygame.display.flip()
-        reloj.tick(30)
+        reloj.tick(FOTOGRAMAS_MENU)
 
     return personaje_seleccionado

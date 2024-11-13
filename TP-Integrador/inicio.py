@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 import pygame
 import sys
-from globals import ANCHO, ALTO, GRIS, CELESTE, pantalla, thickness
+from globals import ANCHO, ALTO, FOTOGRAMAS_MENU, GRIS, CELESTE, pantalla, thickness
 from utils import imagen_inicio, draw_text
 
 pygame.init()

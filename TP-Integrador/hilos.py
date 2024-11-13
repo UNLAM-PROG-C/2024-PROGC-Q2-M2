@@ -4,7 +4,7 @@ import random
 import globals
 from queue import Queue
 from forma import Forma
-from globals import ALTO
+from globals import ALTO, CANTIDAD_FLUCTUACION_VIDAS, FOTOGRAMAS_FORMAS, TIPO_FORMA_BUENA
 
 class GeneradorFormas:
     def __init__(self, cola, lock, tiempo_inicial, stop_event, formas_buenas_seleccionadas, formas_malas_seleccionadas, frecuencia_base=1.0):
@@ -40,10 +40,10 @@ def actualizar_forma(forma, incremento_velocidad, jugador):
         if (jugador.y < forma.y + forma.tamano and
             jugador.x < forma.x + forma.tamano and
             jugador.x + jugador.ancho_jugador > forma.x):
-            if forma.tipo == 'buena':
-                globals.puntaje += 1
+            if forma.tipo ==  TIPO_FORMA_BUENA:
+                globals.puntaje += CANTIDAD_FLUCTUACION_VIDAS
             else:
-                globals.vidas -= 1
+                globals.vidas -= CANTIDAD_FLUCTUACION_VIDAS
             return None  # La forma no se guarda después de la colisión
 
         return forma
@@ -75,7 +75,7 @@ class MovimientoFormas:
     def mover_formas(self):
         """Controla el movimiento de las formas y detecta colisiones."""
         while not self.stop_event.is_set():
-            self.reloj.tick(50)
+            self.reloj.tick(FOTOGRAMAS_FORMAS)
 
             with self.lock:
                 formas_actualizadas = procesar_formas(self)

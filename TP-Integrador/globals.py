@@ -3,6 +3,26 @@ import time
 import threading
 from queue import Queue
 
+VEL_CAIDA_LIMITE_INFERIOR = 3
+VEL_CAIDA_LIMITE_SUPERIOR = 7
+TAM_FORMA_LIMITE_INFERIOR = 40
+TAM_FORMA_LIMITE_SUPERIOR = 80
+TIPO_FORMA_MALA = "mala"
+TIPO_FORMA_BUENA = "buena"
+PUNTAJE_INICIAL = 0
+CANTIDAD_VIDAS = 3
+CANTIDAD_VIDAS_PERDER = 0
+SALIR_JUEGO = "salir"
+TAM_PERSONAJE_LIMITE_INFERIOR = 100
+TAM_PERSONAJE_LIMITE_SUPERIOR = 150
+CANTIDAD_FLUCTUACION_VIDAS = 1
+FOTOGRAMAS_MENU = 30
+FOTOGRAMAS_FORMAS = 50
+FOTOGRAMAS_JUEGO = 60
+DIR_PERSONAJE_DERECHA = "derecha"
+DIR_PERSONAJE_IZQUIERDA = "izquierda"
+
+
 puntaje = 0        # Puntuación del jugador
 vidas = 3          # Número de vidas del jugador
 # Definimos las dimensiones de la pantalla del juego
