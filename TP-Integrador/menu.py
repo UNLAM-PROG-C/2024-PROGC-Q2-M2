@@ -2,7 +2,7 @@ from tkinter import font
 import pygame
 import time 
 from utils import filtro_blanco_negro, imagenes_personajes, imagen_portada, imagen_selecciones, imagenes_formas_buenas
-from globals import ALTO, ANCHO, DIR_PERSONAJE_DERECHA, FOTOGRAMAS_MENU, SALIR_JUEGO, pantalla, reloj, BLANCO, NEGRO, GRIS, VERDE, CELESTE, musica_activa 
+from globals import ALTO, ANCHO, DIR_PERSONAJE_DERECHA, FOTOGRAMAS_MENU, SALIR_JUEGO, pantalla, reloj, BLANCO, NEGRO, GRIS, VERDE, CELESTE, font_path
 
 
 def mostrarTop5():      
@@ -67,8 +67,8 @@ def mostrar_portada():
     """Muestra la pantalla de portada con un botón para iniciar el juego."""
     portada_activa = True
     musica_activa = True
-    fuente_titulo = pygame.font.Font('fonts/dogicapixelbold.ttf', 55)
-    fuente_boton = pygame.font.Font('fonts/dogicapixelbold.ttf', 30)
+    fuente_titulo = pygame.font.Font(font_path, 55)
+    fuente_boton = pygame.font.Font(font_path, 30)
     ancho_boton = 280
     alto_boton = 75
     
@@ -142,13 +142,16 @@ def mostrar_portada():
 def mostrar_pantalla_fin():
     """Muestra la pantalla final del juego con las opciones de 'Volver a Jugar' o 'Salir'."""
     fin_activo = True
-    fuente_game_over = pygame.font.SysFont(None, 72)
-    fuente_boton = pygame.font.SysFont(None, 48)
+    fuente_game_over = pygame.font.Font(font_path, 45)
+    fuente_boton = pygame.font.Font(font_path, 19)
     ancho_boton = 250
     alto_boton = 100
 
     filtro_blanco_negro(pantalla)
-
+    fuente_game_over = pygame.font.Font(font_path, 46)
+    texto_game_over = fuente_game_over.render("¡Juego Terminado!", True, NEGRO)
+    pantalla.blit(texto_game_over, (ANCHO // 2 - texto_game_over.get_width() // 2, ALTO // 3))
+    fuente_game_over = pygame.font.Font(font_path, 45)
     texto_game_over = fuente_game_over.render("¡Juego Terminado!", True, BLANCO)
     pantalla.blit(texto_game_over, (ANCHO // 2 - texto_game_over.get_width() // 2, ALTO // 3))
 
@@ -192,13 +195,13 @@ def mostrar_pantalla_fin():
 def mostrar_menu():
     """Muestra el menú de selección de comidas buenas y malas.
     """
-    fuente_titulo = pygame.font.SysFont(None, 72)
+    fuente_titulo = pygame.font.Font(font_path, 25)
     while True:
         menu_activo = True
         opciones = list(imagenes_formas_buenas.keys())
         seleccionadas_buenas = []
         seleccionadas_malas = []
-        fuente = pygame.font.SysFont(None, 36)
+        fuente = pygame.font.Font(font_path, 15)
         ancho_boton = 200
         alto_boton = 50
         ancho_imagen = 50
@@ -280,7 +283,7 @@ def manejar_seleccion(pos, botones, seleccionadas, seleccionadas_contrarias):
 def mostrar_botones(botones, seleccionadas, titulo, x, y, color_seleccionado, ancho_boton, alto_boton):
     """Dibuja los botones y muestra el título correspondiente.
     """
-    fuente = pygame.font.SysFont(None, 36)
+    fuente = pygame.font.Font(font_path, 15)
     texto = fuente.render(titulo, True, BLANCO)
     pantalla.blit(texto, (x, y))
     for boton, opcion, imagen in botones:
@@ -294,8 +297,8 @@ def mostrar_botones(botones, seleccionadas, titulo, x, y, color_seleccionado, an
 def mostrar_seleccion_personaje():
     """Muestra el menú para seleccionar el personaje del jugador."""
     seleccion_activa = True
-    fuente_titulo = pygame.font.SysFont(None, 72)
-    fuente_boton = pygame.font.SysFont(None, 36)
+    fuente_titulo = pygame.font.Font(font_path, 35)
+    fuente_boton = pygame.font.Font(font_path, 15)
     ancho_boton = 150
     alto_boton = 200
 

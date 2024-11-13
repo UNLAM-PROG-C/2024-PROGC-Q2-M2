@@ -60,6 +60,8 @@ formas_malas_seleccionadas = []
 
 thickness = 2
 
-musica_activa = 1
+font_path = 'fonts/dogicapixelbold.ttf'
+
+
 
 musica = 0
