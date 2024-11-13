@@ -14,12 +14,14 @@ pygame.init()
 
 def ejecutar_juego():
     """Función principal para ejecutar el flujo del juego."""
+    global tiempo_inicial, ejecutando, stop_event, lock_formas, cola_formas, reloj
 
     # Reiniciar el estado del juego
     globals.puntaje = 0
     globals.vidas = 3
     tiempo_inicial = time.time()
     ejecutando = True
+    cola_formas = Queue()
     
     # Evento para controlar la detención de hilos
     stop_event = threading.Event()
