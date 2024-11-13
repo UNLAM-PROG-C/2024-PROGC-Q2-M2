@@ -3,6 +3,7 @@ import pygame
 import threading
 import time 
 import globals
+from inicio import inicio
 from jugador import Jugador
 from hilos import GeneradorFormas, MovimientoFormas
 from forma import dibujar_forma
@@ -100,6 +101,7 @@ def ejecutar_juego():
 
 # Inicia el flujo principal del juego
 if __name__ == "__main__":
+    inicio()
     mostrar_portada()
     
     while True:
