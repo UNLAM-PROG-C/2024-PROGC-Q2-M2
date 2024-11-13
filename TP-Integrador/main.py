@@ -2,8 +2,7 @@ from queue import Queue
 import pygame
 import threading
 import time 
-import globals
-from inicio import *
+from inicio import inicio, save_score
 from jugador import Jugador
 from hilos import GeneradorFormas, MovimientoFormas
 from forma import dibujar_forma
@@ -13,11 +12,9 @@ from globals import ANCHO, ALTO, NEGRO, reloj, pantalla, velocidad_jugador, cola
 
 pygame.init()
 
-def ejecutar_juego(nombre_jugador):
-    """Función principal para ejecutar el flujo del juego."""
-    global tiempo_inicial, ejecutando, stop_event, lock_formas, cola_formas, reloj
-
-    # Reiniciar el estado del juego
+def inicializar_juego():
+    """Reinicia el estado del juego y configura las variables globales."""
+    global tiempo_inicial, ejecutando, stop_event, cola_formas
     globals.puntaje = 0
     globals.vidas = 3
     tiempo_inicial = time.time()
@@ -104,11 +101,8 @@ def esperar_hilos(hilo_generador, hilo_movedor):
     hilo_generador.join()
     hilo_movedor.join()
 
-    save_score(nombre_jugador, globals.puntaje)
-    
 
-
-def ejecutar_juego():
+def ejecutar_juego(nombre_jugador):
     """Función principal para ejecutar el flujo del juego."""
     inicializar_juego()
     hilo_generador, hilo_movedor = iniciar_hilos()
@@ -136,14 +130,15 @@ def ejecutar_juego():
         pygame.display.flip()
 
     esperar_hilos(hilo_generador, hilo_movedor)
-
+    save_score(nombre_jugador, globals.puntaje)
+    
     # Mostrar la pantalla de fin del juego y tomar la acción correspondiente
     return mostrar_pantalla_fin()
 
 # Inicia el flujo principal del juego
 if __name__ == "__main__":
-    nombre_jugador = inicio()
     mostrar_portada()
+    nombre_jugador = inicio()
     
     while True:
         # Seleccionar el personaje del jugador

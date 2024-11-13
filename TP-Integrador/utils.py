@@ -64,3 +64,5 @@ imagenes_personajes = {
 imagen_fondo = cargar_imagen('img/day2.png', (ANCHO, ALTO))
 
 imagen_portada = cargar_imagen('img/portada.png', (ANCHO, ALTO))
+
+fondo_nombre = cargar_imagen("img/inicio.png")
