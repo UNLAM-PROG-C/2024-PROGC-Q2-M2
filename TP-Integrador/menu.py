@@ -1,6 +1,7 @@
+from tkinter import font
 import pygame
 import time 
-from utils import imagenes_personajes, imagen_portada, draw_text, imagenes_formas_buenas, imagenes_formas_malas
+from utils import imagenes_personajes, imagen_portada, imagen_selecciones, imagenes_formas_buenas
 from globals import ALTO, ANCHO, DIR_PERSONAJE_DERECHA, FOTOGRAMAS_MENU, SALIR_JUEGO, pantalla, reloj, BLANCO, NEGRO, GRIS, VERDE, CELESTE 
 
 
@@ -148,7 +149,8 @@ def mostrar_pantalla_fin():
 
     while fin_activo:
         pantalla.fill(BLANCO)  # Fondo blanco
-        texto_titulo = fuente_titulo.render("¡Juego Terminado!", True, NEGRO)
+        pantalla.blit(imagen_selecciones,(0,0))
+        texto_titulo = fuente_titulo.render("¡Juego Terminado!", True, BLANCO)
         pantalla.blit(texto_titulo, (ANCHO // 2 - texto_titulo.get_width() // 2, 100))
 
         # Dibujar el botón "Volver a Jugar"
@@ -209,7 +211,8 @@ def mostrar_menu():
 
         while menu_activo:
             pantalla.fill(BLANCO)
-            texto_titulo = fuente_titulo.render("Selección de Comidas", True, NEGRO)
+            pantalla.blit(imagen_selecciones, (0, 0)) 
+            texto_titulo = fuente_titulo.render("Selección de Comidas", True, BLANCO)
             pantalla.blit(texto_titulo, (ANCHO // 2 - texto_titulo.get_width() // 2, 50))
 
             for evento in pygame.event.get():
@@ -235,7 +238,7 @@ def mostrar_menu():
                 "Presiona ENTER para comenzar el juego."
             ]
             for idx, instruccion in enumerate(instrucciones):
-                texto_instruccion = fuente.render(instruccion, True, NEGRO)
+                texto_instruccion = fuente.render(instruccion, True, BLANCO)
                 pantalla.blit(texto_instruccion, (ANCHO // 2 - texto_instruccion.get_width() // 2, 450 + idx * 30))
 
             pygame.display.flip()
@@ -270,7 +273,7 @@ def mostrar_botones(botones, seleccionadas, titulo, x, y, color_seleccionado, an
     """Dibuja los botones y muestra el título correspondiente.
     """
     fuente = pygame.font.SysFont(None, 36)
-    texto = fuente.render(titulo, True, NEGRO)
+    texto = fuente.render(titulo, True, BLANCO)
     pantalla.blit(texto, (x, y))
     for boton, opcion, imagen in botones:
         seleccionado = opcion in seleccionadas
@@ -304,8 +307,9 @@ def mostrar_seleccion_personaje():
     personaje_seleccionado = None
 
     while seleccion_activa:
-        pantalla.fill(BLANCO)  # Fondo blanco
-        texto_titulo = fuente_titulo.render("Seleccioná tu Personaje", True, NEGRO)
+        pantalla.fill(BLANCO) 
+        pantalla.blit(imagen_selecciones, (0, 0)) 
+        texto_titulo = fuente_titulo.render("Seleccioná tu Personaje", True, BLANCO)
         pantalla.blit(texto_titulo, (ANCHO // 2 - texto_titulo.get_width() // 2, 50))
 
         # Dibujar los botones de personajes
@@ -313,7 +317,7 @@ def mostrar_seleccion_personaje():
             pygame.draw.rect(pantalla, (200, 200, 200), boton)
             imagen_personaje = imagenes_personajes[nombre_personaje][DIR_PERSONAJE_DERECHA]
             pantalla.blit(imagen_personaje, (boton.x + (ancho_boton // 2) - imagen_personaje.get_width() // 2, boton.y + (alto_boton // 2) - imagen_personaje.get_height() // 2))
-            texto_nombre = fuente_boton.render(nombre_personaje, True, NEGRO)
+            texto_nombre = fuente_boton.render(nombre_personaje, True, BLANCO)
             pantalla.blit(texto_nombre, (boton.x + (ancho_boton // 2) - texto_nombre.get_width() // 2, boton.y + alto_boton))
 
         # Manejo de eventos
