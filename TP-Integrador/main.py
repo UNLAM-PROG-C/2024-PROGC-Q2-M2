@@ -91,7 +91,7 @@ def verificar_fin_del_juego():
         texto_game_over = fuente_game_over.render("¡Juego Terminado!", True, NEGRO)
         pantalla.blit(texto_game_over, (ANCHO // 2 - texto_game_over.get_width() // 2, ALTO // 2))
         pygame.display.flip()
-        time.sleep(3)
+        time.sleep(0.8)
         ejecutando = False
         stop_event.set()
 
