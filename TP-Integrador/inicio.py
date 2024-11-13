@@ -35,6 +35,7 @@ def inicio():
     global input_active, user_text
     clock = pygame.time.Clock()
     running = True
+    max_length = 9
 
     while running:
         pantalla.blit(imagen_inicio, (0, 0))
@@ -64,7 +65,8 @@ def inicio():
                     elif event.key == pygame.K_BACKSPACE:
                         user_text = user_text[:-1]
                     else:
-                        user_text += event.unicode
+                        if len(user_text) < max_length:
+                            user_text += event.unicode
 
         pygame.display.flip()
         clock.tick(FOTOGRAMAS_MENU)
