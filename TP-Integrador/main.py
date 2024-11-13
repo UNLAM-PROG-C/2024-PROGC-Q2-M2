@@ -14,7 +14,8 @@ from globals import ANCHO, ALTO, CANTIDAD_VIDAS, CANTIDAD_VIDAS_PERDER, DIR_PERS
 pygame.init()
 
 pygame.mixer.init()
-pygame.mixer.music.load("musica_fondo.mp3") 
+pygame.mixer.music.load("Musica_de_fondo.mp3") 
+pygame.mixer.music.set_volume(0.03)
 
 def inicializar_juego():
     """Función principal para ejecutar el flujo del juego."""
