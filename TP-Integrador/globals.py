@@ -22,7 +22,6 @@ FOTOGRAMAS_JUEGO = 60
 DIR_PERSONAJE_DERECHA = "derecha"
 DIR_PERSONAJE_IZQUIERDA = "izquierda"
 
-
 puntaje = 0        # Puntuación del jugador
 vidas = 3          # Número de vidas del jugador
 # Definimos las dimensiones de la pantalla del juego
