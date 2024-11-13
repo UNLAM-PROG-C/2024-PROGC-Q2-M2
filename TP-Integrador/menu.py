@@ -132,9 +132,9 @@ def mostrar_menu():
                 elif evento.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
                     # Verificar clic en botones de formas buenas
-                    manejar_seleccion(pos, botones_buenas, seleccionadas_buenas)
+                    manejar_seleccion(pos, botones_buenas, seleccionadas_buenas, seleccionadas_malas)
                     # Verificar clic en botones de formas malas
-                    manejar_seleccion(pos, botones_malas, seleccionadas_malas)
+                    manejar_seleccion(pos, botones_malas, seleccionadas_malas, seleccionadas_buenas)
                 elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_RETURN:
                     menu_activo = False
 
@@ -166,12 +166,14 @@ def mostrar_menu():
             time.sleep(2)  # Pausa para que el usuario vea el mensaje
 
 # Función para manejar la selección de opciones del menú
-def manejar_seleccion(pos, botones, seleccionadas):
+def manejar_seleccion(pos, botones, seleccionadas, seleccionadas_contrarias):
     """Maneja la selección y deselección de opciones del menú.
     """
     for boton, opcion in botones:
         if boton.collidepoint(pos):
             if opcion not in seleccionadas:
+                if opcion in seleccionadas_contrarias:
+                    seleccionadas_contrarias.remove(opcion)
                 seleccionadas.append(opcion)
             else:
                 seleccionadas.remove(opcion)
