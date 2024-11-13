@@ -20,8 +20,6 @@ pygame.mixer.music.set_volume(0.03)
 def inicializar_juego():
     """Función principal para ejecutar el flujo del juego."""
     global tiempo_inicial, ejecutando, stop_event, lock_formas, cola_formas, reloj
-
-    # Reiniciar el estado del juego
     globals.puntaje = PUNTAJE_INICIAL
     globals.vidas = CANTIDAD_VIDAS
     tiempo_inicial = time.time()
@@ -111,51 +109,33 @@ def ejecutar_juego(nombre_jugador):
     hilo_generador, hilo_movedor = iniciar_hilos()
     
     while ejecutando:
-        reloj.tick(FOTOGRAMAS_JUEGO)  # Controlamos el juego a 60 FPS
-        pantalla.blit(imagen_fondo, (0, 0))  # Dibujamos la imagen de fondo
-
-        # Manejo de eventos y movimiento del jugador
+        reloj.tick(FOTOGRAMAS_JUEGO) 
+        pantalla.blit(imagen_fondo, (0, 0))
         accion = manejar_eventos()
         if accion == SALIR_JUEGO:
             break
 
         manejar_movimiento_jugador()
         dibujar_jugador()
-
-        # Dibujar formas y mostrar el HUD
         dibujar_formas_en_pantalla()
         mostrar_hud()
-
-        # Verificar si el juego terminó
         verificar_fin_del_juego()
-
-        # Actualizar la pantalla
         pygame.display.flip()
     
     esperar_hilos(hilo_generador, hilo_movedor)
     
     return mostrar_pantalla_fin()
 
-# Inicia el flujo principal del juego
 if __name__ == "__main__":
     mostrar_portada()
     nombre_jugador = inicio()
     
     while True:
-        # Seleccionar el personaje del jugador
         personaje_seleccionado = mostrar_seleccion_personaje()
-
-        # Crear la instancia del jugador con el personaje seleccionado
         jugador = Jugador(personaje_seleccionado)
-
-        # Mostramos el menú y obtenemos las selecciones del jugador
         formas_buenas_seleccionadas, formas_malas_seleccionadas = mostrar_menu()
-
-        # Ejecutamos el juego y obtenemos la acción seleccionada al final
         accion = ejecutar_juego(nombre_jugador)
-
-        # Verificamos la acción después de que termina el juego
         if accion == SALIR_JUEGO:
-            break  # Salimos del bucle principal y cerramos el juego
+            break
 
     pygame.quit()

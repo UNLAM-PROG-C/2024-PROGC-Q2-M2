@@ -31,12 +31,9 @@ def actualizar_forma(forma, incremento_velocidad, jugador):
         Retorna None si la forma debe eliminarse (colisión o fuera de pantalla).
         """
         forma.y += forma.velocidad + incremento_velocidad
-
-        # Verificar si la forma salió de la pantalla
         if forma.y > ALTO:
             return None
 
-        # Verificar colisión con el jugador
         if (jugador.y < forma.y + forma.tamano and
             jugador.x < forma.x + forma.tamano and
             jugador.x + jugador.ancho_jugador > forma.x):
@@ -44,7 +41,7 @@ def actualizar_forma(forma, incremento_velocidad, jugador):
                 globals.puntaje += CANTIDAD_FLUCTUACION_VIDAS
             else:
                 globals.vidas -= CANTIDAD_FLUCTUACION_VIDAS
-            return None  # La forma no se guarda después de la colisión
+            return None  
 
         return forma
 
@@ -79,7 +76,5 @@ class MovimientoFormas:
 
             with self.lock:
                 formas_actualizadas = procesar_formas(self)
-
-                # Reinsertar formas actualizadas en la cola
                 for forma in formas_actualizadas:
                     self.cola.put(forma)

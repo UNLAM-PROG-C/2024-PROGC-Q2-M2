@@ -4,7 +4,7 @@ import time
 from queue import Queue
 from globals import ALTO, ANCHO, CELESTE, COMPONENTE_AZUL_GRIS, COMPONENTE_ROJO_GRIS, COMPONENTE_VERDE_GRIS, TAM_PERSONAJE_LIMITE_INFERIOR, TAM_PERSONAJE_LIMITE_SUPERIOR, TIPO_FORMA_BUENA, TIPO_FORMA_MALA, thickness
 
-# Función para cargar imágenes con manejo de errores
+
 def cargar_imagen(ruta, escala=None, tipo_forma=None):
     try:
         imagen = pygame.image.load(ruta).convert_alpha()
@@ -24,7 +24,7 @@ def filtro_blanco_negro(imagen):
         for y in range(alto):
             color = imagen.get_at((x, y))
             gris = int(COMPONENTE_ROJO_GRIS * color.r + COMPONENTE_VERDE_GRIS * color.g + COMPONENTE_AZUL_GRIS * color.b)
-            imagen.set_at((x, y), (gris, gris, gris, color.a))  # Mantener la transparencia
+            imagen.set_at((x, y), (gris, gris, gris, color.a)) 
 
 def draw_text(text, font, color, surface, x, y):
     """Función para dibujar texto en la pantalla con borde más grueso.""" 
@@ -40,9 +40,6 @@ def draw_text(text, font, color, surface, x, y):
     text_rect = text_obj.get_rect(center=(x, y)) 
     surface.blit(text_obj, text_rect)
 
-
-
-# Cargar imágenes de las formas buenas y malas
 imagenes_formas_buenas = {
     'Hamburguesa': cargar_imagen('img/comida_rapida_snacks/15_burger.png', tipo_forma= TIPO_FORMA_BUENA),
     'Papas Fritas': cargar_imagen('img/comida_rapida_snacks/44_frenchfries.png', tipo_forma= TIPO_FORMA_BUENA),
@@ -67,7 +64,6 @@ imagenes_formas_malas = {
     'Torta': cargar_imagen('img/dulces_postres/30_chocolatecake.png', tipo_forma=TIPO_FORMA_MALA)
 }
 
-# Cargar imágenes de personajes disponibles
 imagenes_personajes = {
     'Katy Perry': {
         'derecha': cargar_imagen('img/nenita1_der.png', (TAM_PERSONAJE_LIMITE_INFERIOR, TAM_PERSONAJE_LIMITE_SUPERIOR)),
@@ -87,11 +83,7 @@ imagenes_personajes = {
     },
 }
 
-# Cargar imagen de fondo
 imagen_fondo = cargar_imagen('img/day2.png', (ANCHO, ALTO))
-
 imagen_portada = cargar_imagen('img/portada.png', (ANCHO, ALTO))
-
 imagen_inicio = cargar_imagen('img/inicio.png', (ANCHO, ALTO))
-
 imagen_selecciones = cargar_imagen('img/background_selecciones.png', (ANCHO, ALTO))
