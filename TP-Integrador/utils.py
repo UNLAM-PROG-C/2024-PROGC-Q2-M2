@@ -2,7 +2,7 @@ import pygame
 import threading    
 import time
 from queue import Queue
-from globals import ALTO, ANCHO 
+from globals import ALTO, ANCHO, CELESTE, thickness
 
 # Función para cargar imágenes con manejo de errores
 def cargar_imagen(ruta, escala=None, tipo_forma=None):
@@ -25,6 +25,22 @@ def filtro_blanco_negro(imagen):
             color = imagen.get_at((x, y))
             gris = int(0.29 * color.r + 0.59 * color.g + 0.11 * color.b)
             imagen.set_at((x, y), (gris, gris, gris, color.a))  # Mantener la transparencia
+
+def draw_text(text, font, color, surface, x, y):
+    """Función para dibujar texto en la pantalla con borde más grueso.""" 
+    outline_color = CELESTE 
+    for dx in range(-thickness, thickness + 1): 
+        for dy in range(-thickness, thickness + 1): 
+            if dx != 0 or dy != 0:
+                text_obj = font.render(text, True, outline_color) 
+                text_rect = text_obj.get_rect(center=(x + dx, y + dy)) 
+                surface.blit(text_obj, text_rect)
+    
+    text_obj = font.render(text, True, color) 
+    text_rect = text_obj.get_rect(center=(x, y)) 
+    surface.blit(text_obj, text_rect)
+
+
 
 # Cargar imágenes de las formas buenas y malas
 imagenes_formas_buenas = {

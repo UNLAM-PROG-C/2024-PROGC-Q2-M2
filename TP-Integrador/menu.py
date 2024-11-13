@@ -1,34 +1,105 @@
 import pygame
 import time 
-from utils import imagenes_personajes, imagen_portada
-from globals import ALTO, ANCHO, pantalla, reloj, BLANCO, NEGRO
+from utils import imagenes_personajes, imagen_portada, draw_text
+from globals import ALTO, ANCHO, pantalla, reloj, BLANCO, NEGRO, GRIS, VERDE, CELESTE 
+
+
+def mostrarTop5():      
+    registros = []
+    with open('historial_record.txt', 'r') as archivo:
+        lineas = archivo.readlines()[2:] 
+
+        for linea in lineas:
+            datos = linea.split('|')
+            nombre = datos[0].strip()
+            puntaje = int(datos[1].strip())
+            fecha = datos[2].strip()
+            registros.append((nombre, puntaje, fecha))
+
+    top5 = sorted(registros, key=lambda x: x[1], reverse=True)[:5]
+
+    pygame.display.set_caption("Top 5 Jugadores")
+    fuente = pygame.font.Font('fonts/dogicapixelbold.ttf', 15)
+    fuente_titulo = pygame.font.Font('fonts/dogicapixelbold.ttf', 20)
+    blanco = (255, 255, 255)
+    gris = (50, 50, 50)
+    celeste = (0, 191, 255)
+    pantalla.fill(gris)
+
+    
+    titulo_texto = fuente_titulo.render("Top 5 Jugadores", True, celeste)
+    pantalla.blit(titulo_texto, (150, 30))
+
+    
+    encabezados = ["Nombre", "Puntaje", "Fecha"]
+    x_offset = [50, 250, 400]
+    for i, encabezado in enumerate(encabezados):
+        texto = fuente.render(encabezado, True, blanco)
+        pantalla.blit(texto, (x_offset[i], 100))
+
+    # Dibujar cada registro del top 5 en la tabla
+    for i, (nombre, puntaje, fecha) in enumerate(top5):
+        y = 150 + i * 50
+        pantalla.blit(fuente.render(nombre, True, blanco), (x_offset[0], y))
+        pantalla.blit(fuente.render(str(puntaje), True, blanco), (x_offset[1], y))
+        pantalla.blit(fuente.render(fecha, True, blanco), (x_offset[2], y))
+
+    corriendo = True
+    while corriendo:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                corriendo = False
+        pygame.display.flip()
 
 #  Función para mostrar la pantalla de portada
 def mostrar_portada():
     """Muestra la pantalla de portada con un botón para iniciar el juego."""
     portada_activa = True
-    fuente_titulo = pygame.font.SysFont(None, 72)
-    fuente_boton = pygame.font.SysFont(None, 48)
-    ancho_boton = 200
-    alto_boton = 80
+    musica_activa = True
+    fuente_titulo = pygame.font.Font('fonts/dogicapixelbold.ttf', 55)
+    fuente_boton = pygame.font.Font('fonts/dogicapixelbold.ttf', 30)
+    ancho_boton = 280
+    alto_boton = 75
+    
+    x_boton_salir = 20
+    y_boton_salir = ALTO - alto_boton - 20
 
     # Posición del botón "Jugar"
     x_boton = (ANCHO // 2) - (ancho_boton // 2)
     y_boton = (ALTO // 2) - (alto_boton // 2)
+    
+    espacio_entre_botones = 20  # Espacio entre los botones verticalmente
+    y_boton_musica = y_boton + alto_boton + espacio_entre_botones
+    y_boton_top5 = y_boton_musica + alto_boton + espacio_entre_botones
 
     boton_jugar = pygame.Rect(x_boton, y_boton, ancho_boton, alto_boton)
+    boton_musica = pygame.Rect(x_boton, y_boton_musica, ancho_boton, alto_boton)
+    boton_top5 = pygame.Rect(x_boton, y_boton_top5, ancho_boton, alto_boton)
+    boton_salir = pygame.Rect(x_boton_salir, y_boton_salir, ancho_boton - 110, alto_boton -20)
+
 
     while portada_activa:
-       # pantalla.fill(BLANCO)  # Fondo blanco
         pantalla.blit(imagen_portada, (0, 0))  # Dibujamos la imagen de fondo
-        texto_titulo = fuente_titulo.render("Tengo hambre", True, BLANCO)
-        pantalla.blit(texto_titulo, (ANCHO // 2 - texto_titulo.get_width() // 2, 100))
+        
+        draw_text("TENGO HAMBRE", fuente_titulo, GRIS, pantalla, ANCHO // 2, ALTO // 3)
 
-        # Dibujar el botón "Jugar"
-        pygame.draw.rect(pantalla, (0, 150, 0), boton_jugar)
-        texto_boton = fuente_boton.render("Jugar", True, BLANCO)
-        texto_boton_rect = texto_boton.get_rect(center=boton_jugar.center)
-        pantalla.blit(texto_boton, texto_boton_rect)
+        # Dibujar botones y textos
+        pygame.draw.rect(pantalla, GRIS, boton_jugar)
+        texto_boton = fuente_boton.render("Jugar!", True, CELESTE)
+        pantalla.blit(texto_boton, texto_boton.get_rect(center=boton_jugar.center))
+        
+        pygame.draw.rect(pantalla, GRIS, boton_musica)
+        texto_boton_musica = fuente_boton.render("Musica", True, CELESTE)
+        pantalla.blit(texto_boton_musica, texto_boton_musica.get_rect(center=boton_musica.center))
+        
+        pygame.draw.rect(pantalla, GRIS, boton_top5)
+        texto_boton_top5 = fuente_boton.render("Top 5", True, CELESTE)
+        pantalla.blit(texto_boton_top5, texto_boton_top5.get_rect(center=boton_top5.center))
+        
+        pygame.draw.rect(pantalla, GRIS, boton_salir)
+        texto_boton_salir = fuente_boton.render("Salir", True, CELESTE)
+        texto_boton_salir_rect = texto_boton_salir.get_rect(center=boton_salir.center)
+        pantalla.blit(texto_boton_salir, texto_boton_salir_rect)
 
         # Manejo de eventos
         for evento in pygame.event.get():
@@ -38,6 +109,20 @@ def mostrar_portada():
             elif evento.type == pygame.MOUSEBUTTONDOWN:
                 if boton_jugar.collidepoint(evento.pos):
                     portada_activa = False
+                elif boton_musica.collidepoint(evento.pos):
+                    if musica_activa:
+                        pygame.mixer.music.play(-1)
+                        musica_activa = False
+                    else:
+                        pygame.mixer.music.stop() 
+                        musica_activa = True
+                elif boton_top5.collidepoint(evento.pos):
+                    mostrarTop5()
+                    pygame.quit()
+                    exit()
+                elif boton_salir.collidepoint(evento.pos):
+                    pygame.quit()
+                    exit()
 
         pygame.display.flip()
         reloj.tick(30)

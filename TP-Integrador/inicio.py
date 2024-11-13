@@ -4,7 +4,7 @@ from datetime import datetime
 import pygame
 import sys
 from globals import ANCHO, ALTO, GRIS, CELESTE, pantalla, thickness
-from utils import imagen_inicio
+from utils import imagen_inicio, draw_text
 
 pygame.init()
 
@@ -16,20 +16,6 @@ small_font = pygame.font.Font(font_path, 20)
 
 input_active = False
 user_text = ""
-
-def draw_text(text, font, color, surface, x, y):
-    """Función para dibujar texto en la pantalla con borde más grueso.""" 
-    outline_color = CELESTE 
-    for dx in range(-thickness, thickness + 1): 
-        for dy in range(-thickness, thickness + 1): 
-            if dx != 0 or dy != 0:
-                text_obj = font.render(text, True, outline_color) 
-                text_rect = text_obj.get_rect(center=(x + dx, y + dy)) 
-                surface.blit(text_obj, text_rect)
-    
-    text_obj = font.render(text, True, color) 
-    text_rect = text_obj.get_rect(center=(x, y)) 
-    surface.blit(text_obj, text_rect)
 
 
 def save_score(username, score):

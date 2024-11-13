@@ -16,6 +16,7 @@ NEGRO = (0, 0, 0)
 GRIS = (16, 0, 37)
 CELESTE = (162, 255, 244)
 BLUE = (105, 34, 226) 
+VERDE = (195, 252, 206)
 
 # Velocidad de movimiento del jugador
 velocidad_jugador = 10
@@ -36,3 +37,7 @@ formas_buenas_seleccionadas = []
 formas_malas_seleccionadas = []
 
 thickness = 2
+
+musica_activa = 1
+
+musica = 0
