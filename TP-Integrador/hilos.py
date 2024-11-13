@@ -26,6 +26,43 @@ class GeneradorFormas:
                 self.cola.put(nueva_forma)
             self.stop_event.wait(frecuencia)
 
+def actualizar_forma(forma, incremento_velocidad, jugador):
+        """Actualiza la posición de una forma y verifica si colisiona o sale de la pantalla.
+        Retorna None si la forma debe eliminarse (colisión o fuera de pantalla).
+        """
+        forma.y += forma.velocidad + incremento_velocidad
+
+        # Verificar si la forma salió de la pantalla
+        if forma.y > ALTO:
+            return None
+
+        # Verificar colisión con el jugador
+        if (jugador.y < forma.y + forma.tamano and
+            jugador.x < forma.x + forma.tamano and
+            jugador.x + jugador.ancho_jugador > forma.x):
+            if forma.tipo == 'buena':
+                globals.puntaje += 1
+            else:
+                globals.vidas -= 1
+            return None  # La forma no se guarda después de la colisión
+
+        return forma
+
+
+def procesar_formas(self):
+        """Procesa todas las formas, actualiza su posición y detecta colisiones."""
+        formas_actualizadas = []
+        while not self.cola.empty():
+            forma = self.cola.get()
+            tiempo_juego = time.time() - self.tiempo_inicial
+            incremento_velocidad = tiempo_juego * 0.002
+
+            forma_actualizada = actualizar_forma(forma, incremento_velocidad, self.jugador)
+            if forma_actualizada:
+                formas_actualizadas.append(forma_actualizada)
+
+        return formas_actualizadas
+
 class MovimientoFormas:
     def __init__(self, cola, lock, jugador, reloj, tiempo_inicial, stop_event):
         self.cola = cola
@@ -36,29 +73,13 @@ class MovimientoFormas:
         self.stop_event = stop_event
 
     def mover_formas(self):
+        """Controla el movimiento de las formas y detecta colisiones."""
         while not self.stop_event.is_set():
             self.reloj.tick(50)
+
             with self.lock:
-                formas_actualizadas = []
-                while not self.cola.empty():
-                    forma = self.cola.get()
-                    tiempo_juego = time.time() - self.tiempo_inicial
-                    incremento_velocidad = tiempo_juego * 0.002
-                    forma.y += forma.velocidad + incremento_velocidad
+                formas_actualizadas = procesar_formas(self)
 
-                    if forma.y > ALTO:
-                        continue
-                    elif (self.jugador.y < forma.y + forma.tamano and
-                          self.jugador.x < forma.x + forma.tamano and
-                          self.jugador.x + self.jugador.ancho_jugador > forma.x):
-                        if forma.tipo == 'buena':
-                            globals.puntaje += 1
-                        else:
-                            globals.vidas -= 1
-                        continue
-
-                    formas_actualizadas.append(forma)
-
+                # Reinsertar formas actualizadas en la cola
                 for forma in formas_actualizadas:
                     self.cola.put(forma)
-

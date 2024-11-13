@@ -5,9 +5,11 @@ from queue import Queue
 from globals import ALTO, ANCHO 
 
 # Función para cargar imágenes con manejo de errores
-def cargar_imagen(ruta, escala=None):
+def cargar_imagen(ruta, escala=None, tipo_forma=None):
     try:
         imagen = pygame.image.load(ruta).convert_alpha()
+        if tipo_forma == 'mala':
+            imagen = convertir_blanco_negro(imagen)
         if escala:
             imagen = pygame.transform.scale(imagen, escala)
         return imagen
@@ -16,17 +18,26 @@ def cargar_imagen(ruta, escala=None):
         pygame.quit()
         exit()
 
+def convertir_blanco_negro(imagen):
+    ancho, alto = imagen.get_size()
+    for x in range(ancho):
+        for y in range(alto):
+            color = imagen.get_at((x, y))
+            gris = int(0.29 * color.r + 0.59 * color.g + 0.11 * color.b)
+            imagen.set_at((x, y), (gris, gris, gris, color.a))  # Mantener la transparencia
+    return imagen
+
 # Cargar imágenes de las formas buenas y malas
 imagenes_formas_buenas = {
-    'Pizza': cargar_imagen('img/81_pizza.png'),
-    'Pancho': cargar_imagen('img/54_hotdog.png'),
-    'Torta': cargar_imagen('img/30_chocolatecake.png')
+    'Pizza': cargar_imagen('img/81_pizza.png', tipo_forma='buena'),
+    'Pancho': cargar_imagen('img/54_hotdog.png', tipo_forma='buena'),
+    'Torta': cargar_imagen('img/30_chocolatecake.png', tipo_forma='buena')
 }
 
 imagenes_formas_malas = {
-    'Pizza': cargar_imagen('img/81_pizza.png'),
-    'Pancho': cargar_imagen('img/54_hotdog.png'),
-    'Torta': cargar_imagen('img/30_chocolatecake.png')
+    'Pizza': cargar_imagen('img/81_pizza.png', tipo_forma='mala'),
+    'Pancho': cargar_imagen('img/54_hotdog.png', tipo_forma='mala'),
+    'Torta': cargar_imagen('img/30_chocolatecake.png', tipo_forma='mala')
 }
 
 # Cargar imágenes de personajes disponibles
