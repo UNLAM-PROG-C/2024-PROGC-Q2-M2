@@ -1,6 +1,7 @@
 import pygame
 import random
-from utils import pantalla, imagenes_formas_buenas, imagenes_formas_malas, ANCHO
+from utils import imagenes_formas_buenas, imagenes_formas_malas, ANCHO
+from globals import pantalla, ANCHO
 
 # Clase que representa una forma que cae (puede ser buena o mala)
 class Forma:
