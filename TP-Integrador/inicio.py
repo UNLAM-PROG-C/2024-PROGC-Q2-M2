@@ -1,4 +1,3 @@
-
 import os
 from datetime import datetime
 import pygame
@@ -68,5 +67,5 @@ def inicio():
                         user_text += event.unicode
 
         pygame.display.flip()
-        clock.tick(30)
+        clock.tick(FOTOGRAMAS_MENU)
     return user_text

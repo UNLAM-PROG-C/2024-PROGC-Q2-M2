@@ -1,6 +1,6 @@
 import pygame
 import time 
-from utils import imagenes_personajes, imagen_portada, draw_text, imagenes_formas_buenas, imagenes_formas_malas
+from utils import imagenes_personajes, imagen_portada, draw_text, imagenes_formas_buenas, imagenes_formas_malas, filtro_blanco_negro
 from globals import ALTO, ANCHO, DIR_PERSONAJE_DERECHA, FOTOGRAMAS_MENU, SALIR_JUEGO, pantalla, reloj, BLANCO, NEGRO, GRIS, VERDE, CELESTE 
 
 
@@ -75,7 +75,7 @@ def mostrar_portada():
     boton_jugar = pygame.Rect(x_boton, y_boton, ancho_boton, alto_boton)
     boton_musica = pygame.Rect(x_boton, y_boton_musica, ancho_boton, alto_boton)
     boton_top5 = pygame.Rect(x_boton, y_boton_top5, ancho_boton, alto_boton)
-    boton_salir = pygame.Rect(x_boton_salir, y_boton_salir, ancho_boton - 110, alto_boton -20)
+    boton_salir = pygame.Rect(x_boton_salir, y_boton_salir, ancho_boton - 110, alto_boton - 20)
 
 
     while portada_activa:
@@ -131,38 +131,37 @@ def mostrar_portada():
 def mostrar_pantalla_fin():
     """Muestra la pantalla final del juego con las opciones de 'Volver a Jugar' o 'Salir'."""
     fin_activo = True
-    fuente_titulo = pygame.font.SysFont(None, 72)
+    fuente_game_over = pygame.font.SysFont(None, 72)
     fuente_boton = pygame.font.SysFont(None, 48)
     ancho_boton = 250
     alto_boton = 100
 
+    filtro_blanco_negro(pantalla)
+
+    texto_game_over = fuente_game_over.render("¡Juego Terminado!", True, BLANCO)
+    pantalla.blit(texto_game_over, (ANCHO // 2 - texto_game_over.get_width() // 2, ALTO // 3))
+
     # Posiciones de los botones
-    x_boton_volver = (ANCHO // 2) - (ancho_boton // 2)
-    y_boton_volver = (ALTO // 2) - (alto_boton) - 20
+    x_boton_volver = (ANCHO // 4) - (ancho_boton // 2)
+    x_boton_salir = (3 * ANCHO // 4) - (ancho_boton // 2)
+    y_botones = ALTO // 3 + texto_game_over.get_height() + 20
 
-    x_boton_salir = (ANCHO // 2) - (ancho_boton // 2)
-    y_boton_salir = (ALTO // 2) + 20
+    boton_volver = pygame.Rect(x_boton_volver, y_botones, ancho_boton, alto_boton)
+    boton_salir = pygame.Rect(x_boton_salir, y_botones, ancho_boton, alto_boton)
 
-    boton_volver = pygame.Rect(x_boton_volver, y_boton_volver, ancho_boton, alto_boton)
-    boton_salir = pygame.Rect(x_boton_salir, y_boton_salir, ancho_boton, alto_boton)
+    # Dibujar el botón "Volver a Jugar"
+    pygame.draw.rect(pantalla, (0, 150, 0), boton_volver)
+    texto_boton_volver = fuente_boton.render("Volver a Jugar", True, BLANCO)
+    texto_boton_volver_rect = texto_boton_volver.get_rect(center=boton_volver.center)
+    pantalla.blit(texto_boton_volver, texto_boton_volver_rect)
+
+    # Dibujar el botón "Salir"
+    pygame.draw.rect(pantalla, (150, 0, 0), boton_salir)
+    texto_boton_salir = fuente_boton.render("Salir", True, BLANCO)
+    texto_boton_salir_rect = texto_boton_salir.get_rect(center=boton_salir.center)
+    pantalla.blit(texto_boton_salir, texto_boton_salir_rect)
 
     while fin_activo:
-        pantalla.fill(BLANCO)  # Fondo blanco
-        texto_titulo = fuente_titulo.render("¡Juego Terminado!", True, NEGRO)
-        pantalla.blit(texto_titulo, (ANCHO // 2 - texto_titulo.get_width() // 2, 100))
-
-        # Dibujar el botón "Volver a Jugar"
-        pygame.draw.rect(pantalla, (0, 150, 0), boton_volver)
-        texto_boton_volver = fuente_boton.render("Volver a Jugar", True, BLANCO)
-        texto_boton_volver_rect = texto_boton_volver.get_rect(center=boton_volver.center)
-        pantalla.blit(texto_boton_volver, texto_boton_volver_rect)
-
-        # Dibujar el botón "Salir"
-        pygame.draw.rect(pantalla, (150, 0, 0), boton_salir)
-        texto_boton_salir = fuente_boton.render(SALIR_JUEGO, True, BLANCO)
-        texto_boton_salir_rect = texto_boton_salir.get_rect(center=boton_salir.center)
-        pantalla.blit(texto_boton_salir, texto_boton_salir_rect)
-
         # Manejo de eventos
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -172,7 +171,7 @@ def mostrar_pantalla_fin():
                 if boton_volver.collidepoint(evento.pos):
                     return "volver"
                 elif boton_salir.collidepoint(evento.pos):
-                    return SALIR_JUEGO
+                    return "salir"
 
         pygame.display.flip()
         reloj.tick(FOTOGRAMAS_MENU)
