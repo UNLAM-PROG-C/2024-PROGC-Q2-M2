@@ -30,7 +30,7 @@ vidas = 3          # Número de vidas del jugador
 # Definimos las dimensiones de la pantalla del juego
 ANCHO, ALTO = 800, 600  # Ajusta el tamaño de la pantalla
 pantalla = pygame.display.set_mode((ANCHO, ALTO))  # Creamos la pantalla del juego
-pygame.display.set_caption("Tengo Hambre")  # Título de la ventana
+pygame.display.set_caption("Atrapa las Comidas")  # Título de la ventana
 
 # Definimos colores usando formato RGB
 BLANCO = (255, 255, 255)

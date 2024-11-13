@@ -1,8 +1,9 @@
+
 import os
 from datetime import datetime
 import pygame
 import sys
-from globals import ANCHO, ALTO, FOTOGRAMAS_MENU, GRIS, CELESTE, pantalla, thickness
+from globals import ANCHO, ALTO, FOTOGRAMAS_MENU, GRIS, CELESTE, pantalla, thickness, musica_activa
 from utils import imagen_inicio, draw_text
 
 pygame.init()
@@ -57,6 +58,7 @@ def inicio():
                     input_active = True
                 else:
                     input_active = False
+                    
             if event.type == pygame.KEYDOWN:
                 if input_active:
                     if event.key == pygame.K_RETURN:
@@ -67,7 +69,6 @@ def inicio():
                     else:
                         if len(user_text) < max_length:
                             user_text += event.unicode
-
         pygame.display.flip()
         clock.tick(FOTOGRAMAS_MENU)
     return user_text

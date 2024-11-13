@@ -2,7 +2,7 @@ from tkinter import font
 import pygame
 import time 
 from utils import filtro_blanco_negro, imagenes_personajes, imagen_portada, imagen_selecciones, imagenes_formas_buenas
-from globals import ALTO, ANCHO, DIR_PERSONAJE_DERECHA, FOTOGRAMAS_MENU, SALIR_JUEGO, pantalla, reloj, BLANCO, NEGRO, GRIS, VERDE, CELESTE 
+from globals import ALTO, ANCHO, DIR_PERSONAJE_DERECHA, FOTOGRAMAS_MENU, SALIR_JUEGO, pantalla, reloj, BLANCO, NEGRO, GRIS, VERDE, CELESTE, musica_activa 
 
 
 def mostrarTop5():      
@@ -247,9 +247,9 @@ def mostrar_menu():
             return seleccionadas_buenas, seleccionadas_malas
         else:
             # Mostrar mensaje de error si no se seleccionó ninguna opción válida
-            fuente_error = pygame.font.SysFont(None, 48)
+            fuente_error = pygame.font.SysFont(None, 30)
             texto_error = fuente_error.render("Debe seleccionar al menos una forma buena y una forma mala.", True, (255, 0, 0)) # Ajustar para que se vea bien
-            pantalla.blit(texto_error, (ANCHO // 2 - texto_error.get_width() // 2, ALTO // 2))
+            pantalla.blit(texto_error, (ANCHO // 2 - texto_error.get_width() // 2, ALTO // 2 + 100))
             pygame.display.flip()
             time.sleep(2)  # Pausa para que el usuario vea el mensaje
 
