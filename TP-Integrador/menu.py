@@ -2,7 +2,7 @@ from tkinter import font
 import pygame
 import time 
 from utils import filtro_blanco_negro, imagenes_personajes, imagen_portada, imagen_selecciones, imagenes_formas_buenas
-from globals import ALTO, ANCHO, ATRAS_JUEGO, DIR_PERSONAJE_DERECHA, FOTOGRAMAS_MENU, SALIR_JUEGO, pantalla, reloj, BLANCO, NEGRO, GRIS, VERDE, CELESTE, musica_activa 
+from globals import ALTO, ANCHO, DIR_PERSONAJE_DERECHA, FOTOGRAMAS_MENU, SALIR_JUEGO, pantalla, reloj, BLANCO, NEGRO, GRIS, VERDE, CELESTE, musica_activa 
 
 
 def mostrarTop5():      
@@ -22,37 +22,35 @@ def mostrarTop5():
     pygame.display.set_caption("Top 5 Jugadores")
     fuente = pygame.font.Font('fonts/dogicapixelbold.ttf', 15)
     fuente_titulo = pygame.font.Font('fonts/dogicapixelbold.ttf', 20)
-    blanco = (255, 255, 255)
-    gris = (50, 50, 50)
-    celeste = (0, 191, 255)
-    pantalla.fill(gris)
+    pantalla.fill(BLANCO)
+    pantalla.blit(imagen_selecciones, (0, 0))
     ancho_boton = 140
     alto_boton = 50
 
     
-    titulo_texto = fuente_titulo.render("Top 5 Jugadores", True, celeste)
+    titulo_texto = fuente_titulo.render("Top 5 Jugadores", True, BLANCO)
     pantalla.blit(titulo_texto, (ANCHO // 2 - titulo_texto.get_width() // 2, 30))
 
 
     encabezados = ["Nombre", "Puntaje", "Fecha"]
     x_offset = [50, 250, 400]
     for i, encabezado in enumerate(encabezados):
-        texto = fuente.render(encabezado, True, blanco)
+        texto = fuente.render(encabezado, True, BLANCO)
         pantalla.blit(texto, (x_offset[i], 100))
 
     # Dibujar cada registro del top 5 en la tabla
     for i, (nombre, puntaje, fecha) in enumerate(top5):
         y = 150 + i * 50
-        pantalla.blit(fuente.render(nombre, True, blanco), (x_offset[0], y))
-        pantalla.blit(fuente.render(str(puntaje), True, blanco), (x_offset[1], y))
-        pantalla.blit(fuente.render(fecha, True, blanco), (x_offset[2], y))
+        pantalla.blit(fuente.render(nombre, True, BLANCO), (x_offset[0], y))
+        pantalla.blit(fuente.render(str(puntaje), True, BLANCO), (x_offset[1], y))
+        pantalla.blit(fuente.render(fecha, True, BLANCO), (x_offset[2], y))
 
-    boton_atras = pygame.Rect(10, 10, ancho_boton, alto_boton)
+    boton_salir = pygame.Rect(ANCHO - ancho_boton - 20, ALTO - alto_boton - 20, ancho_boton, alto_boton)
 
-    pygame.draw.rect(pantalla, GRIS, boton_atras)
-    texto_boton_atras = fuente.render(ATRAS_JUEGO, True, CELESTE)
-    texto_boton_atras_rect = texto_boton_atras.get_rect(center=boton_atras.center)
-    pantalla.blit(texto_boton_atras, texto_boton_atras_rect)
+    pygame.draw.rect(pantalla, GRIS, boton_salir)
+    texto_boton_salir = fuente.render(SALIR_JUEGO, True, CELESTE)
+    texto_boton_salir_rect = texto_boton_salir.get_rect(center=boton_salir.center)
+    pantalla.blit(texto_boton_salir, texto_boton_salir_rect)
 
     corriendo = True
     while corriendo:
@@ -60,8 +58,8 @@ def mostrarTop5():
             if evento.type == pygame.QUIT:
                 corriendo = False
             elif evento.type == pygame.MOUSEBUTTONDOWN:
-                if boton_atras.collidepoint(evento.pos):
-                    return "atras"
+                if boton_salir.collidepoint(evento.pos):
+                    corriendo = False
         pygame.display.flip()
 
 #  Función para mostrar la pantalla de portada
@@ -221,7 +219,7 @@ def mostrar_menu():
 
         while menu_activo:
             pantalla.fill(BLANCO)
-            pantalla.blit(imagen_selecciones, (0, 0)) 
+            pantalla.blit(imagen_selecciones, (0, 0))
             texto_titulo = fuente_titulo.render("Selección de Comidas", True, BLANCO)
             pantalla.blit(texto_titulo, (ANCHO // 2 - texto_titulo.get_width() // 2, 50))
 
