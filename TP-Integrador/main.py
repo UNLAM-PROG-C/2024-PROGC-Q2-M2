@@ -8,7 +8,7 @@ from jugador import Jugador
 from hilos import GeneradorFormas, MovimientoFormas
 from forma import dibujar_forma
 from menu import mostrar_portada, mostrar_menu, mostrar_seleccion_personaje, mostrar_pantalla_fin
-from utils import  imagen_fondo
+from utils import  imagen_fondo, filtro_blanco_negro
 from globals import ANCHO, ALTO, NEGRO, reloj, pantalla, velocidad_jugador, cola_formas, lock_formas
 
 pygame.init()
@@ -92,6 +92,7 @@ def verificar_fin_del_juego():
     """Verifica si el jugador ha perdido todas las vidas y muestra el mensaje final."""
     global ejecutando
     if globals.vidas <= 0:
+        filtro_blanco_negro(pantalla)
         fuente_game_over = pygame.font.SysFont(None, 72)
         texto_game_over = fuente_game_over.render("¡Juego Terminado!", True, NEGRO)
         pantalla.blit(texto_game_over, (ANCHO // 2 - texto_game_over.get_width() // 2, ALTO // 2))
