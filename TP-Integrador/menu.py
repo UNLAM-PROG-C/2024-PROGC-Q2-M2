@@ -225,7 +225,7 @@ def mostrar_seleccion_personaje():
         for boton, nombre_personaje in botones_personajes:
             pygame.draw.rect(pantalla, (200, 200, 200), boton)
             imagen_personaje = imagenes_personajes[nombre_personaje]['derecha']
-            pantalla.blit(imagen_personaje, (boton.x, boton.y))
+            pantalla.blit(imagen_personaje, (boton.x + (ancho_boton // 2) - imagen_personaje.get_width() // 2, boton.y + (alto_boton // 2) - imagen_personaje.get_height() // 2))
             texto_nombre = fuente_boton.render(nombre_personaje, True, NEGRO)
             pantalla.blit(texto_nombre, (boton.x + (ancho_boton // 2) - texto_nombre.get_width() // 2, boton.y + alto_boton))
 
