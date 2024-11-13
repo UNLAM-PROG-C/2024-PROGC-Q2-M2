@@ -1,6 +1,6 @@
 import pygame
 import time 
-from utils import imagenes_personajes, imagen_portada
+from utils import imagenes_personajes, imagen_portada, imagenes_formas_buenas
 from globals import ALTO, ANCHO, pantalla, reloj, BLANCO, NEGRO
 
 #  Función para mostrar la pantalla de portada
@@ -21,7 +21,7 @@ def mostrar_portada():
     while portada_activa:
        # pantalla.fill(BLANCO)  # Fondo blanco
         pantalla.blit(imagen_portada, (0, 0))  # Dibujamos la imagen de fondo
-        texto_titulo = fuente_titulo.render("Tengo hambre", True, BLANCO)
+        texto_titulo = fuente_titulo.render("Tengo Hambre", True, BLANCO)
         pantalla.blit(texto_titulo, (ANCHO // 2 - texto_titulo.get_width() // 2, 100))
 
         # Dibujar el botón "Jugar"
@@ -97,14 +97,16 @@ def mostrar_pantalla_fin():
 def mostrar_menu():
     """Muestra el menú de selección de comidas buenas y malas.
     """
+    fuente_titulo = pygame.font.SysFont(None, 72)
     while True:
         menu_activo = True
-        opciones = ['Pizza', 'Pancho', 'Torta']
+        opciones = list(imagenes_formas_buenas.keys())
         seleccionadas_buenas = []
         seleccionadas_malas = []
         fuente = pygame.font.SysFont(None, 36)
         ancho_boton = 200
         alto_boton = 50
+        ancho_imagen = 50
 
         # Calculamos la posición 'x' centrada para los botones de las formas buenas y malas
         x_centrada_buena = (ANCHO // 4) - (ancho_boton // 2)
@@ -112,17 +114,17 @@ def mostrar_menu():
 
         # Definimos las posiciones y tamaños de los botones
         botones_buenas = [
-            (pygame.Rect(x_centrada_buena, 200 + idx * 60, ancho_boton, alto_boton), opcion)
+            (pygame.Rect((idx % 3) * (ancho_imagen + 20) + x_centrada_buena, 200 + (idx // 3) * (alto_boton + 20), ancho_imagen, alto_boton), opcion, imagenes_formas_buenas[opcion])
             for idx, opcion in enumerate(opciones)
         ]
         botones_malas = [
-            (pygame.Rect(x_centrada_mala, 200 + idx * 60, ancho_boton, alto_boton), opcion)
+            (pygame.Rect((idx % 3) * (ancho_imagen + 20) + x_centrada_mala, 200 + (idx // 3) * (alto_boton + 20), ancho_imagen, alto_boton), opcion, imagenes_formas_buenas[opcion])
             for idx, opcion in enumerate(opciones)
         ]
 
         while menu_activo:
             pantalla.fill(BLANCO)
-            texto_titulo = fuente.render("Selecciona las comidas buenas y malas", True, NEGRO)
+            texto_titulo = fuente_titulo.render("Selección de Comidas", True, NEGRO)
             pantalla.blit(texto_titulo, (ANCHO // 2 - texto_titulo.get_width() // 2, 50))
 
             for evento in pygame.event.get():
@@ -139,8 +141,8 @@ def mostrar_menu():
                     menu_activo = False
 
             # Dibujar los botones y mostrar el texto correspondiente
-            mostrar_botones(botones_buenas, seleccionadas_buenas, "Comidas Buenas:", x_centrada_buena, 150, (0, 200, 0))
-            mostrar_botones(botones_malas, seleccionadas_malas, "Comidas Malas:", x_centrada_mala, 150, (200, 0, 0))
+            mostrar_botones(botones_buenas, seleccionadas_buenas, "Comidas Buenas:", x_centrada_buena, 150, (0, 200, 0), ancho_imagen, alto_boton)
+            mostrar_botones(botones_malas, seleccionadas_malas, "Comidas Malas:", x_centrada_mala, 150, (200, 0, 0), ancho_imagen, alto_boton)
 
             # Mostrar instrucciones
             instrucciones = [
@@ -169,7 +171,7 @@ def mostrar_menu():
 def manejar_seleccion(pos, botones, seleccionadas, seleccionadas_contrarias):
     """Maneja la selección y deselección de opciones del menú.
     """
-    for boton, opcion in botones:
+    for boton, opcion, imagen in botones:
         if boton.collidepoint(pos):
             if opcion not in seleccionadas:
                 if opcion in seleccionadas_contrarias:
@@ -179,19 +181,19 @@ def manejar_seleccion(pos, botones, seleccionadas, seleccionadas_contrarias):
                 seleccionadas.remove(opcion)
 
 # Función para mostrar los botones en pantalla
-def mostrar_botones(botones, seleccionadas, titulo, x, y, color_seleccionado):
+def mostrar_botones(botones, seleccionadas, titulo, x, y, color_seleccionado, ancho_boton, alto_boton):
     """Dibuja los botones y muestra el título correspondiente.
     """
     fuente = pygame.font.SysFont(None, 36)
     texto = fuente.render(titulo, True, NEGRO)
     pantalla.blit(texto, (x, y))
-    for boton, opcion in botones:
+    for boton, opcion, imagen in botones:
         seleccionado = opcion in seleccionadas
         color_boton = color_seleccionado if seleccionado else (200, 200, 200)
         pygame.draw.rect(pantalla, color_boton, boton)
-        texto_opcion = fuente.render(opcion, True, NEGRO)
-        texto_rect = texto_opcion.get_rect(center=boton.center)
-        pantalla.blit(texto_opcion, texto_rect)
+        posicion_x = boton.x + (ancho_boton - imagen.get_width()) // 2
+        posicion_y = boton.y + (alto_boton - imagen.get_height()) // 2
+        pantalla.blit(imagen, (posicion_x, posicion_y))
 
 def mostrar_seleccion_personaje():
     """Muestra el menú para seleccionar el personaje del jugador."""
@@ -218,7 +220,7 @@ def mostrar_seleccion_personaje():
 
     while seleccion_activa:
         pantalla.fill(BLANCO)  # Fondo blanco
-        texto_titulo = fuente_titulo.render("Selecciona tu Personaje", True, NEGRO)
+        texto_titulo = fuente_titulo.render("Seleccioná tu Personaje", True, NEGRO)
         pantalla.blit(texto_titulo, (ANCHO // 2 - texto_titulo.get_width() // 2, 50))
 
         # Dibujar los botones de personajes
@@ -245,4 +247,3 @@ def mostrar_seleccion_personaje():
         reloj.tick(30)
 
     return personaje_seleccionado
-

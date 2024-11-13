@@ -28,15 +28,27 @@ def filtro_blanco_negro(imagen):
 
 # Cargar imágenes de las formas buenas y malas
 imagenes_formas_buenas = {
-    'Pizza': cargar_imagen('img/81_pizza.png', tipo_forma='buena'),
-    'Pancho': cargar_imagen('img/54_hotdog.png', tipo_forma='buena'),
-    'Torta': cargar_imagen('img/30_chocolatecake.png', tipo_forma='buena')
+    'Hamburguesa': cargar_imagen('img/comida_rapida_snacks/15_burger.png', tipo_forma='buena'),
+    'Papas Fritas': cargar_imagen('img/comida_rapida_snacks/44_frenchfries.png', tipo_forma='buena'),
+    'Pancho': cargar_imagen('img/comida_rapida_snacks/54_hotdog.png', tipo_forma='buena'),
+    'Nacho': cargar_imagen('img/comida_rapida_snacks/71_nacho.png', tipo_forma='buena'),
+    'Pizza': cargar_imagen('img/comida_rapida_snacks/81_pizza.png', tipo_forma='buena'),
+    'Pochoclos': cargar_imagen('img/comida_rapida_snacks/83_popcorn.png', tipo_forma='buena'),
+    'Sanguche': cargar_imagen('img/comida_rapida_snacks/92_sandwich.png', tipo_forma='buena'),
+    'Chocolate': cargar_imagen('img/dulces_postres/26_chocolate.png', tipo_forma='buena'),
+    'Torta': cargar_imagen('img/dulces_postres/30_chocolatecake.png', tipo_forma='buena')
 }
 
 imagenes_formas_malas = {
-    'Pizza': cargar_imagen('img/81_pizza.png', tipo_forma='mala'),
-    'Pancho': cargar_imagen('img/54_hotdog.png', tipo_forma='mala'),
-    'Torta': cargar_imagen('img/30_chocolatecake.png', tipo_forma='mala')
+    'Hamburguesa': cargar_imagen('img/comida_rapida_snacks/15_burger.png', tipo_forma='mala'),
+    'Papas Fritas': cargar_imagen('img/comida_rapida_snacks/44_frenchfries.png', tipo_forma='mala'),
+    'Pancho': cargar_imagen('img/comida_rapida_snacks/54_hotdog.png', tipo_forma='mala'),
+    'Nacho': cargar_imagen('img/comida_rapida_snacks/71_nacho.png', tipo_forma='mala'),
+    'Pizza': cargar_imagen('img/comida_rapida_snacks/81_pizza.png', tipo_forma='mala'),
+    'Pochoclos': cargar_imagen('img/comida_rapida_snacks/83_popcorn.png', tipo_forma='mala'),
+    'Sanguche': cargar_imagen('img/comida_rapida_snacks/92_sandwich.png', tipo_forma='mala'),
+    'Chocolate': cargar_imagen('img/dulces_postres/26_chocolate.png', tipo_forma='mala'),
+    'Torta': cargar_imagen('img/dulces_postres/30_chocolatecake.png', tipo_forma='mala')
 }
 
 # Cargar imágenes de personajes disponibles
